@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
     <title><%= content_for(:title) || "シーシャ検索サイト" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -19,10 +19,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
   </head>
 
-  <body class="font-sans">
-    <%= render 'shared/header' %>
+  <body class="font-sans flex flex-col min-h-screen">
+    <% if user_signed_in? %>
+      <%= render 'shared/header' %>
+    <% else %>
+      <%= render 'shared/before_login_header' %>
+    <% end %>
     <%= render 'shared/flash_message' %>
-    <%= yield %>
+    <main class="flex-grow">
+      <%= yield %>
+    </main>
     <%= render "shared/footer" %>
   </body>
 </html>

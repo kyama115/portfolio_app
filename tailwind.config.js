@@ -17,6 +17,19 @@ module.exports = {
       }
     }
   },
+
+  theme: {
+    extend: {
+      // ... 既存のコード ...
+      colors: {
+        'flash-success': '#D4EDDA', // 成功メッセージの背景色
+        'flash-error': '#F8D7DA', // エラーメッセージの背景色
+        'flash-success-text': '#155724', // 成功メッセージの文字色
+        'flash-error-text': '#721c24', // エラーメッセージの文字色
+      }
+    }
+  },
+
   plugins: [require("daisyui")],
   daisyui: {
     darkTheme: false

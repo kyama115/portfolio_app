@@ -15,7 +15,7 @@
           <%= f.search_field :area_cont, placeholder: "エリアで検索", class: "ml-2 w-100 h-10 px-4 bg-white text-black rounded-full border" %>
           <%= f.select :budget_range, [['~1,000円', '0-1000'], ['1,000~2,000円', '1000-2000'], ['2,000~3,000円', '2000-3000'], ['3,000~4,000円', '3000-4000'], ['4,000~5,000円', '4000-5000'], ['5,000円~', '5000+']], { prompt: "予算を選択" }, { class: "ml-2 w-100 h-10 px-4 bg-white text-black rounded-full border appearance-none" } %>
           <%= f.search_field :scene_cont, placeholder: "利用用途", class: "mr-3 ml-2 w-100 h-10 px-4 bg-white text-black rounded-full border" %>
-          <%= f.submit "検索", class: "ml-auto px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-700" %>
+          <%= f.submit "検索", class: "ml-auto px-6 py-2 bg-black text-white rounded-lg hover:underline" %>
         <% end %>
       </div>
 
@@ -137,8 +137,6 @@
       </section>
 
   <div class="text-center mt-8 mb-8">
-    <button class="px-6 py-3 bg-black text-white rounded-full hover:bg-gray-700"><%= link_to 'もっとみる', shops_path %></button>
+    <button class="px-6 py-3 bg-black text-white rounded-full hover:underline"><%= link_to 'もっとみる', shops_path %></button>
   </div>
-
-  <div class="mb-16"></div>
 </div>

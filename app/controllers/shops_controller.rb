@@ -1,4 +1,6 @@
 class ShopsController < ApplicationController
+  skip_before_action :authenticate_user!, only: %i[index show]
+
   def index
     @q = Shop.ransack(params[:q])
     if params[:budget_range]
