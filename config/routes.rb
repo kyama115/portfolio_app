@@ -24,4 +24,7 @@ Rails.application.routes.draw do
   root "tops#index"
 
   resources :shops
+  resources :users, only: %i[show edit update destroy] do
+    get 'delete_avatar', on: :member
+  end
 end

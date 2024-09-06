@@ -13,9 +13,9 @@
         <%= f.password_field :password, placeholder: "パスワード", required: true, class: "w-full px-4 py-3 bg-transparent border-2 border-white border-opacity-20 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent placeholder-white" %>
       </div>
       <div class="flex justify-between items-center mb-6">
-        <%= link_to "パスワードを忘れた方はこちら", new_user_password_path, class: "text-sm hover:underline text-right w-full" %>
+        <%= link_to "パスワードを忘れた方はこちら", new_user_password_path, class: "text-sm hover:underline text-right w-full text-right" %>
       </div>
-      <%= f.submit "ログイン", class: "w-full py-3 bg-white text-gray-800 font-semibold rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 cursor-pointer" %>
+      <%= f.submit "ログイン", class: "w-full py-3 bg-white text-gray-800 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 cursor-pointer" %>
 
       <div class="text-center mt-6">
         <p class="text-sm">登録はお済みですか？ <%= link_to "新規登録はこちら", new_user_registration_path, class: "hover:underline" %></p>

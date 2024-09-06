@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
   before_action :authenticate_user!
@@ -11,9 +12,9 @@ class ApplicationController < ActionController::Base
     redirect_to new_user_session_path
   end
 
-  def authenticate_user!
-    super
-  end
+  # def authenticate_user!
+  #   super
+  # end
 
   protected
 
@@ -21,6 +22,7 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :email, :password, :password_confirmation, :nickname, :avatar])
     devise_parameter_sanitizer.permit(:sign_in, keys: [:email, :password])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :email, :password, :password_confirmation, :nickname, :avatar])
   end
 
   # def set_locale

@@ -19,16 +19,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
   </head>
 
-  <body class="font-sans flex flex-col min-h-screen">
+  <body class="font-semibold flex flex-col min-h-screen">
     <% if user_signed_in? %>
       <%= render 'shared/header' %>
     <% else %>
       <%= render 'shared/before_login_header' %>
     <% end %>
     <%= render 'shared/flash_message' %>
+
     <main class="flex-grow">
       <%= yield %>
     </main>
+
     <%= render "shared/footer" %>
   </body>
 </html>

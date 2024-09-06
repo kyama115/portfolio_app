@@ -112,29 +112,29 @@
       </div>
 
       <section class="bg-gray-100 text-gray-600">
-        <div class="container px-4 mx-auto">
-          <div class="flex flex-wrap -m-4">
-            <% if @shops.present? %>
-              <% @shops.each do |shop| %>
-                <div class="w-1/3 p-4">
-                  <div class="flex relative">
-                    <img alt="gallery" class="absolute inset-0 w-full h-full object-cover object-center" src="https://dummyimage.com/600x360">
-                    <div class="px-8 py-10 relative z-10 w-full border-4 border-gray-200 bg-white opacity-0 hover:opacity-100">
-                      <div class="tracking-widest text-sm title-font font-medium text-indigo-500 mb-1" style="min-height: 60px;">
-                        <%= shop.area.presence || "" %>
-                      </div>
-                      <h1 class="title-font text-lg font-medium text-gray-900 mb-3"><%= link_to shop.title, shop_path(shop) %></h1>
-                      <p class="leading-relaxed"><%= shop.description %></p>
-                    </div>
+    <div class="container px-4 mx-auto">
+      <div class="flex flex-wrap -m-4">
+        <% if @shops.present? %>
+          <% @shops.each do |shop| %>
+            <%= link_to shop_path(shop), class: "w-1/3 p-4" do %>
+              <div class="flex relative h-full">
+                <img alt="gallery" class="absolute inset-0 w-full h-full object-cover object-center" src="https://dummyimage.com/600x360">
+                <div class="px-8 py-10 relative w-full border-4 border-gray-200 bg-white opacity-0 hover:opacity-100 transition-opacity duration-300">
+                  <div class="tracking-widest text-sm title-font font-medium text-indigo-500 mb-1" style="min-height: 60px;">
+                    <%= shop.area.presence || "" %>
                   </div>
+                  <h1 class="title-font text-lg font-medium text-gray-900 mb-3"><%= shop.title %></h1>
+                  <p class="leading-relaxed"><%= shop.description %></p>
                 </div>
-              <% end %>
-            <% else %>
-              <p>店舗が見つかりませんでした</p>
+              </div>
             <% end %>
-          </div>
-        </div>
-      </section>
+          <% end %>
+        <% else %>
+          <p>店舗が見つかりませんでした</p>
+        <% end %>
+      </div>
+    </div>
+  </section>
 
   <div class="text-center mt-8 mb-8">
     <button class="px-6 py-3 bg-black text-white rounded-full hover:underline"><%= link_to 'もっとみる', shops_path %></button>

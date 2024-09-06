@@ -14,7 +14,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     @user = User.new(sign_up_params)
     if @user.save
-      redirect_to root_path, notice: 'ユーザー登録が完了しました'
+      redirect_to new_user_session_path, notice: 'ユーザー登録が完了しました'
     else
       flash[:alert] = @user.errors.full_messages.join(', ')  # フラッシュメッセージにエラーを追加
       respond_with_navigational(@user) { render :new }
@@ -66,4 +66,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def after_inactive_sign_up_path_for(resource)
     super(resource)
   end
+
+  # # パスワードなしで更新できるメソッド
+  # def update_resource(resource, params)
+  #   resource.update_without_password(params)
+  # end
+
+  # # 編集後のリダイレクト先を指定するメソッド
+  # def after_update_path_for(resource)
+  #   user_path(resource)
+  # end
 end
