@@ -9,4 +9,12 @@ module ApplicationHelper
       "default_avatar.png"
     end
   end
+
+  def shop_image(shop, size = 100)
+    if shop&.shop_image&.attached?
+      shop.shop_image.variant(resize: "#{size}x#{size}!")
+    else
+      "shisha.jpg"
+    end
+  end
 end

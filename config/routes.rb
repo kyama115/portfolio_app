@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     get '/users/sign_out' => 'devise/sessions#destroy'
+    delete 'users/avatar', to: 'users/registrations#delete_avatar', as: 'delete_user_avatar'
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -23,8 +24,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "tops#index"
 
-  resources :shops
+  resources :shops do
+    resources :reviews, only: %i[new edit create edit destroy], shallow: true
+  end
   resources :users, only: %i[show edit update destroy] do
-    get 'delete_avatar', on: :member
+    member do
+      get 'delete_avatar'
+    end
   end
 end

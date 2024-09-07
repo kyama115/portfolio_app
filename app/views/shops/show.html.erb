@@ -1,6 +1,6 @@
-<div class="container mx-auto bg-gray-100 p-12 px-36">
+<div class="container mx-auto bg-gray-200 p-12 px-36">
   <div class="relative flex justify-center items-center">
-    <%= image_tag("shisha.jpg", class: "w-960 h-480 object-cover rounded-xl opacity-50") %>
+    <%= image_tag(shop_image(@shop), class: "w-960 h-480 object-cover rounded-xl opacity-50") %>
     <div class="absolute inset-0 flex flex-col justify-center items-center text-white">
       <h1 class="text-4xl font-bold mb-4"><%= @shop.title %></h1>
     </div>
@@ -10,6 +10,8 @@
     <h2 class="text-3xl font-semibold mb-6 text-black">店舗情報</h2>
     <%= render 'shops/shop', shop: @shop %>
   </div>
-
-    <%= link_to "戻る", :back, class: "tracking-widest mt-6 flex flex-col w-full text-center text-black hover:underline" %>
+  <div class="mt-12">
+    <%= render 'shops/reviews', shop: @shop %>
+  </div>
+  <%= link_to "戻る", :back, class: "tracking-widest pt-6 flex flex-col w-full text-center text-black hover:underline" %>
 </div>

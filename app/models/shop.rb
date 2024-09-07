@@ -1,6 +1,11 @@
 class Shop < ApplicationRecord
   require 'geocoder'
-  
+
+  has_many :reviews, dependent: :destroy
+  has_many :users, through: :reviews
+
+  has_one_attached :shop_image
+
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, presence: true, length: { maximum: 65_535 }
 

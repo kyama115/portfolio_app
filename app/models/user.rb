@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :reviews, dependent: :destroy
+  has_many :shops, through: :reviews
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -21,6 +23,10 @@ class User < ApplicationRecord
 
   # アバターのバリデーション（オプション）
   validate :acceptable_avatar
+
+  def avatar_persisted?
+    avatar.attached? && avatar.persisted?
+  end
 
   private
 

@@ -18,6 +18,9 @@ class ShopsController < ApplicationController
     @shop = Shop.find(params[:id])
     @q = Shop.ransack(params[:q])
     @shops = @q.result(distinct: true).order(created_at: :desc)
+    @review = Review.new
+    @reviews = @shop.reviews.includes(:user).order(created_at: :desc)
+    @user = current_user
   end
 
   private

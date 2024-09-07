@@ -1,0 +1,29 @@
+<div class="mt-12">
+  <div class="flex justify-between items-center">
+    <h2 class="text-3xl font-semibold mb-6 text-black">口コミ</h2>
+    <%= link_to 'レビューを投稿', new_shop_review_path(@shop), class: 'bg-black hover:bg-gray-800 text-white py-2 px-4 mb-6 rounded' %>
+  </div>
+  <div class="bg-white shadow-lg rounded-xl p-8">
+    <% if @shop.reviews.any? %>
+      <% @shop.reviews.each do |review| %>
+        <div class="mb-6 pb-6 border-b border-gray-200 last:border-b-0">
+          <div class="flex items-center mb-2">
+            <% if @user.avatar.attached? %>
+              <%= image_tag(@user.avatar.variant(resize: "16x16"), class: "rounded-full w-10 h-10 object-cover mb-4") %>
+            <% else %>
+              <%= image_tag("default_avatar.png", class: "rounded-full w-10 h-10 object-cover mb-4") %>
+            <% end %>
+            <div class="ml-1"><%= review.user.name %></div>
+          </div>
+          <p class="text-black text-xl font-semibold mb-2"><%= review.title %></p>
+          <p class="text-black"><%= review.content %></p>
+          <div class="text-sm text-gray-500 mt-2">
+            <%= review.created_at.strftime("%Y年%m月%d日") %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-black">まだ口コミはありません。</p>
+    <% end %>
+  </div>
+</div>

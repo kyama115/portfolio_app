@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  protect_from_forgery with: :exception
+  
   skip_before_action :require_no_authentication, only: %i[new create]
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
@@ -27,9 +29,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    super do |resource|
+      if account_update_params[:avatar].present?
+        resource.avatar.attach(account_update_params[:avatar])
+      end
+    end
+  end
 
   # # DELETE /resource
   # def destroy
@@ -44,6 +50,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def cancel
   #   super
   # end
+
+  def delete_avatar
+    current_user.avatar.purge if current_user.avatar.attached?
+    respond_to do |format|
+      format.html { redirect_to edit_user_registration_path }
+      format.turbo_stream
+    end
+  end
 
   protected
 
