@@ -1,0 +1,15 @@
+<div class="mb-8">
+  <h2 class="text-xl mb-4">予算から探す</h2>
+  <div class="flex flex-wrap gap-4">
+    <% [
+      ['~1,000円', '0-1000'],
+      ['1,000~2,000円', '1000-2000'],
+      ['2,000~3,000円', '2000-3000'],
+      ['3,000~4,000円', '3000-4000'],
+      ['4,000~5,000円', '4000-5000'],
+      ['5,000円~', '5000+'],
+    ].each do |budget, range| %>
+      <%= link_to budget, shops_path(budget_range: range), class: "px-4 py-2 rounded-full border hover:bg-gray-100" %>
+    <% end %>
+  </div>
+</div>

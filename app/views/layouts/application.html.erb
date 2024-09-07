@@ -15,11 +15,12 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}", defer: true %>
     <script src="https://kit.fontawesome.com/b5bf160816.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
   </head>
 
-  <body class="font-semibold flex flex-col min-h-screen">
+  <body class="font-medium flex flex-col min-h-screen">
     <% if user_signed_in? %>
       <%= render 'shared/header' %>
     <% else %>

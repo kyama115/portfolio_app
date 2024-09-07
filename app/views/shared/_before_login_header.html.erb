@@ -1,9 +1,9 @@
 <header class="bg-black fixed top-0 left-0 w-full z-10">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between h-16">
-      <div class="flex ml-2 items-center">
+      <div class="flex items-center">
         <%= image_tag asset_path("default_avatar.png"), class: "h-10" %>
-        <%= link_to "シーシャ検索サイト", root_path, class: "text-white text-2xl ml-4" %>
+        <%= link_to "シーシャ検索サイト", root_path, class: "text-white text-2xl mx-4" %>
       </div>
 
       <!-- ransack検索フォーム -->
@@ -14,56 +14,50 @@
               <%= f.search_field :title_or_description_or_area_or_budget_or_scene_cont, 
                                  data: { autocomplete_target: 'input' }, 
                                  placeholder: "店舗名で検索", 
-                                 class: "h-10 px-4 bg-white text-black rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+                                 class: "h-10 px-4 bg-white text-black rounded-full focus:ring-2 focus:ring-blue-500" %>
             </div>
           <% end %>
         <% end %>
       </div>
 
-      <div class="flex ml-auto">
-        <nav>
-          <ul class="flex space-x-6 text-white">
-            <li><%= link_to 'ホーム', root_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
-            <li><%= link_to '店舗一覧', shops_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
-            <li><%= link_to '新規登録', new_user_registration_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
-            <li><%= link_to 'ログイン', new_user_session_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out mr-6" %></li>
-          </ul>
-        </nav>
-      </div>
+      <!-- ナビゲーションリンク -->
+      <nav class="flex items-center">
+        <ul class="flex space-x-6 text-white">
+          <li><%= link_to 'ホーム', root_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
+          <li><%= link_to '店舗一覧', shops_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
+          <li><%= link_to '新規登録', new_user_registration_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
+          <li><%= link_to 'ログイン', new_user_session_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out mr-6" %></li>
+        </ul>
+      </nav>
 
-    <!-- ハンバーガーメニュー -->
-    <div>
-      <input type="checkbox" id="menu-toggle" class="hidden">
-      <label for="menu-toggle" class="cursor-pointer">
-        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-        </svg>
-      </label>
+      <!-- ハンバーガーメニュー -->
+      <div>
+        <input type="checkbox" id="menu-toggle" class="hidden">
+        <label for="menu-toggle" class="cursor-pointer">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </label>
 
-      <!-- ドロワーメニュー -->
-      <div class="fixed inset-y-0 right-0 w-64 bg-black transform translate-x-full transition-transform duration-300 ease-in-out z-50">
-        <div class="p-6">
-          <label for="menu-toggle" class="absolute top-4 right-4 text-white cursor-pointer">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </label>
-          <nav class="mt-8 space-y-4">
-            <% if user_signed_in? %>
-              <div class="flex items-center mb-4">
-                <%= image_tag user_avatar(current_user, 40), class: "rounded-full w-10 h-10 mr-3" %>
-                <span class="text-white"><%= current_user.name %></span>
-              </div>
-            <% end %>
-            <%= link_to 'ホーム', root_path, class: "block text-white hover:text-gray-300 hover:underline" %>
-            <%= link_to '店舗一覧', shops_path, class: "block text-white hover:text-gray-300 hover:underline" %>
-            <% if user_signed_in? %>
-              <%= link_to 'マイページ', user_path(current_user), class: "block text-white hover:text-gray-300 hover:underline" %>
-              <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: "block text-white hover:text-gray-300 hover:underline" %>
-            <% else %>
+        <!-- ドロワーメニュー -->
+        <div class="fixed inset-y-0 right-0 w-64 bg-black transform translate-x-full transition-transform duration-300 ease-in-out z-50">
+          <div class="p-6">
+            <label for="menu-toggle" class="absolute top-4 right-4 text-white cursor-pointer">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </label>
+            <nav class="mt-8 space-y-4">
+              <% if user_signed_in? %>
+                <div class="flex items-center mb-4">
+                  <%= image_tag user_avatar(current_user, 40), class: "rounded-full w-10 h-10 mr-3" %>
+                  <span class="text-white"><%= current_user.name %></span>
+                </div>
+              <% end %>
+              <%= link_to 'ホーム', root_path, class: "block text-white hover:text-gray-300 hover:underline" %>
+              <%= link_to '店舗一覧', shops_path, class: "block text-white hover:text-gray-300 hover:underline" %>
               <%= link_to '新規登録', new_user_registration_path, class: "block text-white hover:text-gray-300 hover:underline" %>
               <%= link_to 'ログイン', new_user_session_path, class: "block text-white hover:text-gray-300 hover:underline" %>
-              <% end %>
             </nav>
           </div>
         </div>

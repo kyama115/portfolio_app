@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between h-16">
       <div class="flex items-center">
         <%= image_tag asset_path("default_avatar.png"), class: "h-10" %>
-        <%= link_to 'シーシャ検索サイト', root_path, class: "text-white text-2xl" %>
+        <%= link_to 'シーシャ検索サイト', root_path, class: "text-white text-2xl mx-4" %>
       </div>
 
       <!-- ransack検索フォーム -->
@@ -14,7 +14,7 @@
               <%= f.search_field :title_or_description_or_area_or_budget_or_scene_cont, 
                                  data: { autocomplete_target: 'input' }, 
                                  placeholder: "店舗名で検索", 
-                                 class: "h-10 px-4 bg-white text-black rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+                                 class: "h-10 px-4 bg-white text-black rounded-full focus:ring-2 focus:ring-blue-500" %>
             </div>
           <% end %>
         <% end %>
@@ -25,13 +25,8 @@
         <ul class="flex space-x-6 text-white">
           <li><%= link_to 'ホーム', root_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
           <li><%= link_to '店舗一覧', shops_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
-          <% if user_signed_in? %>
-            <li><%= link_to 'マイページ', user_path(current_user), class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
-            <li><%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: "hover:text-gray-300 hover:underline bg-transparent border-none cursor-pointer p-0 transition duration-150 ease-in-out" %></li>
-          <% else %>
-            <li><%= link_to '新規登録', new_user_registration_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
-            <li><%= link_to 'ログイン', new_user_session_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
-          <% end %>
+          <li><%= link_to 'マイページ', user_path(current_user), class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
+          <li><%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: "hover:text-gray-300 hover:underline bg-transparent border-none cursor-pointer p-0 transition duration-150 ease-in-out" %></li>
         </ul>
 
         <!-- ハンバーガーメニュー -->
@@ -62,13 +57,8 @@
                 <% end %>
                 <%= link_to 'ホーム', root_path, class: "block text-white hover:text-gray-300 hover:underline" %>
                 <%= link_to '店舗一覧', shops_path, class: "block text-white hover:text-gray-300 hover:underline" %>
-                <% if user_signed_in? %>
-                  <%= link_to 'マイページ', user_path(current_user), class: "block text-white hover:text-gray-300 hover:underline" %>
-                  <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: "block text-white hover:text-gray-300 hover:underline bg-transparent border-none cursor-pointer p-0 w-full text-left" %>
-                <% else %>
-                  <%= link_to '新規登録', new_user_registration_path, class: "block text-white hover:text-gray-300 hover:underline" %>
-                  <%= link_to 'ログイン', new_user_session_path, class: "block text-white hover:text-gray-300 hover:underline" %>
-                <% end %>
+                <%= link_to 'マイページ', user_path(current_user), class: "block text-white hover:text-gray-300 hover:underline" %>
+                <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: "block text-white hover:text-gray-300 hover:underline bg-transparent border-none cursor-pointer p-0 w-full text-left" %>
               </nav>
             </div>
           </div>

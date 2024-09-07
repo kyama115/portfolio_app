@@ -1,6 +1,11 @@
 class Shop < ApplicationRecord
+  require 'geocoder'
+  
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, presence: true, length: { maximum: 65_535 }
+
+  geocoded_by :address
+  after_validation :geocode, if: :address_changed?
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[title description area budget scene]
