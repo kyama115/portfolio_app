@@ -23,6 +23,10 @@ class ShopsController < ApplicationController
     @user = current_user
   end
 
+  def favorites
+    @favorite_shops = current_user.favorite_shops.includes(:user).order(created_at: :desc)
+  end
+
   private
 
   def set_shop

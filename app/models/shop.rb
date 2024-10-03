@@ -1,8 +1,9 @@
 class Shop < ApplicationRecord
   require 'geocoder'
 
-  has_many :reviews, dependent: :destroy
   has_many :users, through: :reviews
+  has_many :reviews, dependent: :destroy
+  has_many :favorites, dependent: :destroy
 
   has_one_attached :shop_image
 
@@ -11,6 +12,10 @@ class Shop < ApplicationRecord
 
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
+
+  def favorite_by?(user)
+    favorites.exists?(user_id: user.id)
+  end
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[title description area budget scene]

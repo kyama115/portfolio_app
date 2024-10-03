@@ -25,6 +25,7 @@
         <ul class="flex space-x-6 text-white">
           <li><%= link_to 'ホーム', root_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
           <li><%= link_to '店舗一覧', shops_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
+          <li><%= link_to 'お気に入り一覧', favorites_shops_path, class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
           <li><%= link_to 'マイページ', user_path(current_user), class: "hover:text-gray-300 hover:underline transition duration-150 ease-in-out" %></li>
           <li><%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: "hover:text-gray-300 hover:underline bg-transparent border-none cursor-pointer p-0 transition duration-150 ease-in-out" %></li>
         </ul>

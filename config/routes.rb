@@ -26,7 +26,11 @@ Rails.application.routes.draw do
 
   resources :shops do
     resources :reviews, only: %i[new edit create edit destroy], shallow: true
+    collection do
+      get 'favorites'
+    end
   end
+
   resources :users, only: %i[show edit update destroy] do
     member do
       get 'delete_avatar'

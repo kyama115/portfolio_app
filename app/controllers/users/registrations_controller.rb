@@ -2,7 +2,7 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   protect_from_forgery with: :exception
-  
+
   skip_before_action :require_no_authentication, only: %i[new create]
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
@@ -18,7 +18,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       redirect_to new_user_session_path, notice: 'ユーザー登録が完了しました'
     else
-      flash[:alert] = @user.errors.full_messages.join(', ')  # フラッシュメッセージにエラーを追加
+      flash[:alert] = @user.errors.full_messages.join(', ')
       respond_with_navigational(@user) { render :new }
     end
   end

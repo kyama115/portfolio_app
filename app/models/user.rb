@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_many :shops, through: :reviews
+  has_many :favorites, dependent: :destroy
+  has_many :favorite_shops, through: :favorites, source: :shop
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -19,6 +22,22 @@ class User < ApplicationRecord
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_limit: [100, 100]
+  end
+
+  def own?(object)
+    id == object&.user_id
+  end
+
+  def favorite(shop)
+    favorite_shops << shop
+  end
+
+   def unfavorite(shop)
+    favorite_shops.destroy(shop)
+  end
+
+   def favorite?(shop)
+    favorite_shops.include?(shop)
   end
 
   # アバターのバリデーション（オプション）
