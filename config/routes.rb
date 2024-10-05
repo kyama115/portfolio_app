@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     collection do
       get 'favorites'
     end
+    get :autocomplete, on: :collection
   end
 
   resources :users, only: %i[show edit update destroy] do

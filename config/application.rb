@@ -19,6 +19,9 @@ module Myapp
 
     require "active_storage/engine"
 
+    # libvipsを使用するように指定
+    config.active_storage.variant_processor = :mini_magick
+
     config.before_configuration do
       env_file = File.join(Rails.root, 'config', 'local_env.yml')
       YAML.load(File.open(env_file)).each do |key, value|

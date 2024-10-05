@@ -9,12 +9,23 @@
       <!-- ransack検索フォーム -->
       <div class="flex-grow mx-4">
         <% if @q %>
-          <%= search_form_for @q, url: shops_path, local: true, class: 'w-full' do |f| %>
-            <div data-controller="autocomplete" data-autocomplete-url-value="/shops/autocomplete" role="combobox" class="relative">
-              <%= f.search_field :title_or_description_or_area_or_budget_or_scene_cont, 
-                                 data: { autocomplete_target: 'input' }, 
-                                 placeholder: "店舗名で検索", 
-                                 class: "h-10 px-4 bg-white text-black rounded-full focus:ring-2 focus:ring-blue-500" %>
+          <%= search_form_for @q, url: shops_path, method: :get, local: true, class: 'w-full' do |f| %>
+            <div data-controller="autocomplete" 
+                 data-autocomplete-url-value="/shops/autocomplete" 
+                 data-autocomplete-min-length-value="2"
+                 data-autocomplete-delay-value="300"
+                 role="combobox" 
+                 class="relative">
+              <%= f.search_field :title_or_description_or_area_or_scene_cont,
+                                 data: { 
+                                   autocomplete_target: 'input',
+                                   action: 'input->autocomplete#search'
+                                 },
+                                 placeholder: "店舗名で検索",
+                                 class: "h-10 w-full px-4 bg-white text-black rounded-full focus:ring-2 focus:ring-blue-500" %>
+              <%= f.hidden_field :id_eq, data: { autocomplete_target: 'hidden'} %>
+              <ul data-autocomplete-target="results" 
+                  class="absolute z-20 w-full mt-1 bg-white border border-current rounded-md shadow-lg max-h-60 overflow-auto"></ul>
             </div>
           <% end %>
         <% end %>

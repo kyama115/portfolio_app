@@ -13,7 +13,7 @@ WORKDIR /rails
 
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
+    apt-get install -y libvips42 --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
@@ -64,6 +64,13 @@ RUN rm -rf node_modules
 
 # Final stage for app image
 FROM base
+
+RUN apt-get update && apt-get install -y libvips42 libvips-dev && \
+    ldconfig && \
+    ls -l /usr/lib/*/libvips.so* && \
+    vips --version
+
+ENV LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu:/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 # Copy built artifacts: gems, application
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"

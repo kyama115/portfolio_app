@@ -2,6 +2,7 @@
   <div class="relative flex justify-center items-center">
     <%= image_tag(shop_image(@shop), class: "w-960 h-480 object-cover rounded-xl opacity-50") %>
     <div class="absolute inset-0 flex flex-col justify-center items-center text-white">
+      <% breadcrumb :shop, @shops %>
       <h1 class="text-4xl font-bold mb-4"><%= @shop.title %></h1>
     </div>
   </div>
