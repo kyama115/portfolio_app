@@ -27,6 +27,8 @@
         </div>
       <% end %>
     </div>
+
+    <%= paginate @favorite_shops %>
     <%= link_to "戻る", :back, class: "mt-12 tracking-widest flex flex-col w-full text-center text-black hover:underline" %>
   </div>
 </section>

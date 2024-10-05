@@ -204,3 +204,10 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
+  # view:
+  #   pagination:
+  #     first: "最初"
+  #     last: "最後"
+  #     previous: "前へ"
+  #     next: "次へ"
+  #     truncate: "…"

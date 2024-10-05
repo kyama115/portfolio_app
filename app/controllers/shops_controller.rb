@@ -4,13 +4,13 @@ class ShopsController < ApplicationController
   def index
     @q = Shop.ransack(params[:q])
     if params[:budget_range]
-      @shops = Shop.budget_range(params[:budget_range])
+      @shops = Shop.budget_range(params[:budget_range]).page(params[:page])
     elsif params[:area]
-      @shops = Shop.by_area(params[:area])
+      @shops = Shop.by_area(params[:area]).page(params[:page])
     elsif params[:scene]
-      @shops = Shop.by_scene(params[:scene])
+      @shops = Shop.by_scene(params[:scene]).page(params[:page])
     else
-      @shops = @q.result(distinct: true).order(created_at: :desc)
+      @shops = Shop.all.order(created_at: :desc).page(params[:page])
     end
   end
 
@@ -24,7 +24,7 @@ class ShopsController < ApplicationController
   end
 
   def favorites
-    @favorite_shops = current_user.favorite_shops.includes(:user).order(created_at: :desc)
+    @favorite_shops = current_user.favorite_shops.includes(:user).order(created_at: :desc).page(params[:page])
   end
 
   private
