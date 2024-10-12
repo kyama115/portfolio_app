@@ -17,4 +17,20 @@ module ApplicationHelper
       "shisha.jpg"
     end
   end
+
+  def x_share_url(shop)
+    text = "#{shop.title} - シーシャ検索サイトで見つけました！"
+    url = shop_url(shop)
+    "https://x.com/intent/tweet?text=#{URI.encode_www_form_component(text)}&url=#{URI.encode_www_form_component(url)}"
+  end
+
+  def facebook_share_url(shop)
+    url = shop_url(shop)
+    "https://www.facebook.com/sharer/sharer.php?u=#{URI.encode_www_form_component(url)}"
+  end
+
+  def instagram_share_url(shop)
+    # Instagramは直接シェアリンクを提供していないため、プロフィールページに遷移します
+    "https://www.instagram.com/#{shop.title.gsub(' ', '_')}"
+  end
 end

@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
+  # 利用規約ページへのルートを追加
+  get 'terms_of_service', to: 'shared#terms_of_service', as: :terms_of_service
+
   # Defines the root path route ("/")
   root "tops#index"
 
