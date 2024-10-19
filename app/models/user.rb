@@ -7,7 +7,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: %i[google_oauth2]
 
   VALID_NAME_REGEX = /\A.*\z/
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -19,6 +20,18 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
   validates :nickname, length: { maximum: 20 }
   validate :password_match
+  validates :uid, uniqueness: { scope: :provider }
+
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0,20]
+      # user.name = auth.info.name
+      # user.nickname = auth.info.nickname || auth.info.name.gsub(/\s+/, "").downcase
+      # user.image = auth.info.image
+      # user.avatar = auth.info.image
+    end
+  end
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_limit: [100, 100]
@@ -45,6 +58,11 @@ class User < ApplicationRecord
 
   def avatar_persisted?
     avatar.attached? && avatar.persisted?
+  end
+
+  def log(level, message)
+    logger = OmniAuth.logger || Rails.logger
+    logger.send(level, "(#{name}) #{message}")
   end
 
   private

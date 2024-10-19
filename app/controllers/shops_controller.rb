@@ -12,11 +12,6 @@ class ShopsController < ApplicationController
     @shops = @shops.includes(:shop_image_attachment)
                    .order(created_at: :desc)
                    .page(params[:page])
-
-    # デバッグ用ログ
-    Rails.logger.debug "Search params: #{params[:q].inspect}"
-    Rails.logger.debug "Generated SQL: #{@shops.to_sql}"
-    Rails.logger.debug "Result count: #{@shops.count}"
   end
 
   def show
