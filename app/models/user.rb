@@ -26,10 +26,10 @@ class User < ApplicationRecord
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]
-      # user.name = auth.info.name
-      # user.nickname = auth.info.nickname || auth.info.name.gsub(/\s+/, "").downcase
-      # user.image = auth.info.image
-      # user.avatar = auth.info.image
+      user.name = auth.info.name
+      user.nickname = auth.info.nickname || auth.info.name.gsub(/\s+/, "").downcase
+      user.image = auth.info.image
+      user.avatar = auth.info.image
     end
   end
 
@@ -46,7 +46,7 @@ class User < ApplicationRecord
   end
 
    def unfavorite(shop)
-    favorite_shops.destroy(shop)
+    favorite_shops.delete(shop)
   end
 
    def favorite?(shop)

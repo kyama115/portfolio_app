@@ -24,7 +24,7 @@ class ShopsController < ApplicationController
   end
 
   def favorites
-    @favorite_shops = current_user.favorite_shops.includes(:user).order(created_at: :desc).page(params[:page])
+    @favorite_shops = current_user.favorite_shops.order(created_at: :desc).page(params[:page])
   end
 
   def autocomplete

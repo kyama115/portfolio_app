@@ -29,11 +29,16 @@ Rails.application.routes.draw do
   root "tops#index"
 
   resources :shops do
-    resources :reviews, only: %i[new edit create edit destroy], shallow: true
-    collection do
-      get 'favorites'
+    resources :reviews, only: %i[new edit create destroy], shallow: true
+    member do
+      post 'favorite', to: 'favorites#create'    # createアクション用
+      delete 'favorite', to: 'favorites#destroy' # destroyアクション用
     end
-    get :autocomplete, on: :collection
+
+    collection do
+      get :autocomplete
+      get :favorites
+    end
   end
 
   resources :users, only: %i[show edit update destroy] do
