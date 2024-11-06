@@ -1,27 +1,50 @@
-<div class="col-sm-12 col-lg-4 mb-3">
-  <div id="shop-id-<%= shop.id %>">
-    <div class="card">
-      <%= image_tag shop.shop_image_url, class: "card-img-top", width: "300", height:"200" %>
-      <div class="card-body">
-        <div class="d-flex">
-          <h4 class="card-title">
-            <%= link_to shop.title, shop_path(shop) %>
-          </h4>
-          <div class='ms-auto'>
-            <%= link_to '#', id: "button-edit-#{shop.id}" do %>
-              <i class="bi bi-pencil-fill"></i>
-            <% end %>
-            <%= link_to '#', id: "button-delete-#{shop.id}", method: :delete, data: {confirm: ''} do %>
-              <i class="bi bi-trash-fill"></i>
-            <% end %>
-          </div>
-        </div>
-        <ul class="list-inline">
-          <li><i class="bi bi-person"></i><%= shop.user.decorate.full_name %></li>
-          <li><i class="bi bi-calendar"></i><%= l shop.created_at, format: :short %></li>
-        </ul>
-        <p class="card-text"><%= shop.description %></p>
-      </div>
+<div class="bg-gray-100 shadow-lg rounded-xl p-8 text-black">
+  <div class="grid grid-cols-2 gap-8">
+    <div>
+      <h3 class="text-xl mb-2 text-black">住所</h3>
+      <p><%= shop.address %></p>
+    </div>
+    <div>
+      <h3 class="text-xl mb-2 text-black">営業時間</h3>
+      <p><%= shop.opening_hours %></p>
+    </div>
+    <div>
+      <h3 class="text-xl mb-2 text-black">予算</h3>
+      <p><%= shop.budget %>円</p>
+      <p class="text-sm text-black mt-1">詳細記載予定</p>
+    </div>
+    <div>
+      <h3 class="text-xl mb-2 text-black">電話番号</h3>
+      <p><%= shop.shop_number %></p>
+    </div>
+    <div>
+      <h3 class="text-xl mb-2 text-black">利用用途</h3>
+      <p><%= shop.scene %></p>
+    </div>
+    <div>
+      <h3 class="text-xl mb-2 text-black">URL</h3>
+      <p><%= shop.shop_url %></p>
+    </div>
+    <div class="col-span-full">
+      <h3 class="text-xl mb-2 text-black">アクセス</h3>
+      <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
   </div>
 </div>
+
+<script>
+function initMap() {
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 15,
+    center: { lat: <%= shop.latitude %>, lng: <%= shop.longitude %> },
+  });
+  
+  new google.maps.Marker({
+    position: { lat: <%= shop.latitude %>, lng: <%= shop.longitude %> },
+    map,
+    title: "<%= shop.title %>",
+  });
+}
+
+window.addEventListener("load", initMap);
+</script>

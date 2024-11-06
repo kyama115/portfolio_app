@@ -1,10 +1,14 @@
-<footer class="fixed bottom-0 left-0 w-full bg-black text-white">
-  <div class="flex items-center justify-between h-16">
-    <nav class="items-center">
-      <%= link_to "利用規約", "#", class: "text-white text-sm  ml-4" %>
-      <%= link_to "プライバシーポリシー", "#", class: "text-white text-sm  ml-4" %>
-      <%= link_to "お問い合わせ", "#", class: "text-white text-sm  ml-4" %>
-    </nav>
-    <aside class="text-white text-sm mr-4">シーシャ検索サイト｜name - ©</aside>
-  </div>
+<footer class="bg-black text-white w-full">
+  <main class="container mx-auto px-4 py-4">
+    <div class="flex flex-col sm:flex-row justify-between items-center">
+      <nav class="flex flex-wrap justify-center sm:justify-start mb-2 sm:mb-0">
+        <%= link_to "利用規約", terms_of_service_path, class: "text-white text-sm hover:underline mx-2 sm:ml-0 sm:mr-4" %>
+        <%= link_to "プライバシーポリシー", "https://kiyac.app/privacypolicy/Wi3KsUpRQySZZOKkWnfQ", class: "text-white text-sm hover:underline mx-2 sm:mx-4" %>
+        <%= link_to "お問い合わせ", "https://forms.gle/ptQaDYAbTkzkBpSW6", class: "text-white text-sm hover:underline mx-2 sm:mx-4" %>
+      </nav>
+      <aside class="text-white text-sm text-center sm:text-right mt-2 sm:mt-0">
+        シーシャ検索サイト｜name - ©
+      </aside>
+    </div>
+  </main>
 </footer>

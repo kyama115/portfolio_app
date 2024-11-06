@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "avatar_container" do %>
+  <%= render partial: "users/avatar", locals: { user: current_user } %>
+<% end %>

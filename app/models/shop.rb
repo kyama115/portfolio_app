@@ -1,9 +1,24 @@
 class Shop < ApplicationRecord
+  require 'geocoder'
+
+  has_many :users, through: :reviews
+  has_many :reviews, dependent: :destroy
+  has_many :favorites, dependent: :destroy
+
+  has_one_attached :shop_image
+
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, presence: true, length: { maximum: 65_535 }
 
+  geocoded_by :address
+  after_validation :geocode, if: :address_changed?
+
+  def favorite_by?(user)
+    favorites.exists?(user_id: user.id)
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
-    %w[title description area budget scene]
+    %w[id title description area budget scene]
   end
 
   def self.ransackable_associations(_auth_object = nil)
@@ -14,6 +29,11 @@ class Shop < ApplicationRecord
   def self.ransackable_scopes(_auth_object = nil)
     %i[budget_range]
   end
+
+  # 全文検索用のスコープ
+  scope :search_full_text, ->(query) {
+    where("title ILIKE :q OR description ILIKE :q OR area ILIKE :q OR scene ILIKE :q", q: "%#{sanitize_sql_like(query)}%")
+  }
 
   # 予算が指定された範囲内であるかを確認するメソッド
   def self.budget_between(min_budget, max_budget)
@@ -35,14 +55,4 @@ class Shop < ApplicationRecord
   def self.by_scene(scene)
     where(scene: scene)
   end
-
-  # # 予算が指定された最小値以上であるかを確認するメソッド
-  # def self.budget_gteq(min_budget)
-  #   where('budget >= ?', min_budget)
-  # end
-
-  # # 予算が指定された最大値未満であるかを確認するメソッド
-  # def self.budget_lteq(max_budget)
-  #   where('budget < ?', max_budget)
-  # end
 end

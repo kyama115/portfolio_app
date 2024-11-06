@@ -1,0 +1,56 @@
+<%= content_for :head do %>
+  <title>マイページ</title>
+<% end %>
+
+<div class="flex flex-col min-h-screen justify-center items-center bg-cover bg-center" style="background-image: url('<%= asset_path('shisha.jpg') %>')">
+  <div class="w-full max-w-md p-8 m-4 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg text-white border-2 border-white border-opacity-10">
+    <h1 class="text-4xl tracking-widest text-center mb-8">マイページ</h1>
+    <%= form_with(model: @user, url: user_path, local: true, multipart: true) do |f| %>
+      <div class="flex flex-col items-center mb-8">
+        <% if @user.avatar.attached? %>
+          <%= image_tag(url_for(@user.avatar), class: "rounded-full w-40 h-40 object-cover mb-4") %>
+          <%# <div class="flex flex-col items-center space-y-2"> %>
+            <%# <%= f.file_field :avatar, class: "text-sm mb-2" %>
+            <%# <%= link_to "画像を削除", delete_avatar_user_path, method: :delete,
+                class: "px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition duration-300 ease-in-out text-center",
+                data: { confirm: "本当に画像を削除しますか？" } %>
+          <%# </div> %>
+        <% else %>
+          <%= image_tag("default_avatar.png", class: "rounded-full w-40 h-40 object-cover mb-4") %>
+        <% end %>
+      </div>
+
+      <% if user_signed_in? && @user == current_user %>
+        <div class="mb-6">
+          <p><strong>名前:</strong> <u><%= @user.name %></u></p>
+          <%# <%= f.text_field :name, placeholder: "名前", class: "w-full px-4 py-3 bg-transparent border-2 border-white border-opacity-20 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent placeholder-white" %>
+        </div>
+        <div class="mb-6">
+          <p><strong>ニックネーム:</strong> <u><%= @user.nickname %></u></p>
+          <%# <%= f.text_field :nickname, placeholder: "ニックネーム", class: "w-full px-4 py-3 bg-transparent border-2 border-white border-opacity-20 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent placeholder-white" %>
+        </div>
+        <div class="mb-6">
+          <p><strong>メールアドレス:</strong> <u><%= @user.email %></u></p>
+        </div>
+        <div class="mb-6">
+          <p><strong>登録日:</strong> <u><%= @user.created_at.strftime("%Y年%m月%d日") %></u></p>
+        </div>
+        <%= link_to edit_user_registration_path, class: "w-full tracking-widest py-3 bg-white text-gray-800 rounded-md hover:bg-gray-200 hover:underline focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 cursor-pointer transition duration-300 ease-in-out flex items-center justify-center" do %>
+          <i class="fa-solid fa-pen mr-2"></i>アカウント編集
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <div class="mt-4 space-y-4">
+      <%# <%= link_to edit_user_password_path, class: "w-full tracking-widest py-3 bg-gray-800 text-white rounded-md hover:bg-gray-700 hover:underline focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50 cursor-pointer transition duration-300 ease-in-out flex items-center justify-center" do %>
+        <%# <i class="fas fa-key mr-2"></i> パスワード変更 %>
+      <%# <% end %>
+
+      <%= link_to user_registration_path, method: :delete, data: { confirm: "本当によろしいですか？", turbo_method: :delete, turbo_confirm: "本当によろしいですか？" }, class: "w-full tracking-widest py-3 bg-red-600 text-white rounded-md hover:bg-red-700 hover:underline focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50 cursor-pointer transition duration-300 ease-in-out flex items-center justify-center" do %>
+        <i class="fas fa-user-times mr-2"></i> アカウント削除
+      <% end %>
+    </div>
+
+    <%= link_to "戻る", :back, class: "tracking-widest mt-6 flex flex-col w-full text-center text-white hover:underline" %>
+  </div>
+</div>

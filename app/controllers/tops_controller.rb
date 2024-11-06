@@ -1,4 +1,6 @@
 class TopsController < ApplicationController
+  skip_before_action :authenticate_user!, only: %i[index]
+
   def index
     @q = Shop.ransack(params[:q])
     @shops = @q.result(distinct: true).order(created_at: :desc).limit(9)
