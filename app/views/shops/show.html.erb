@@ -7,7 +7,7 @@
       <div class="flex items-center space-x-4">
         <%= render 'shops/share_button', shop: @shop %>
         <%= link_to x_share_url(@shop), target: "_blank", rel: "noopener noreferrer", class: "text-white hover:text-blue-400 transition duration-150 ease-in-out" do %>
-          <i class="fab fa-x-twitter text-2xl" aria-hidden="true"></i>
+          <i class="fab fa-twitter text-2xl" aria-hidden="true"></i>
         <% end %>
         <%= link_to facebook_share_url(@shop), target: "_blank", rel: "noopener noreferrer", class: "text-white hover:text-blue-400 transition duration-150 ease-in-out" do %>
           <i class="fab fa-facebook-f text-2xl" aria-hidden="true"></i>
