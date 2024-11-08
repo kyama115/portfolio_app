@@ -51,6 +51,7 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 gem "auth0", "~> 5.9"
 gem 'kaminari', '~> 1.2.2'
+gem 'config'
 
 
 group :development, :test do
@@ -58,6 +59,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "pry-rails"
   gem "pry-byebug"
+  gem 'letter_opener_web', '~> 2.0'
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false

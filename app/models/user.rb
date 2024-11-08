@@ -21,6 +21,7 @@ class User < ApplicationRecord
   validates :nickname, length: { maximum: 20 }
   validate :password_match
   validates :uid, uniqueness: { scope: :provider }
+  validates :reset_password_token, uniqueness: true, allow_nil: true
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
