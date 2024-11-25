@@ -18,21 +18,18 @@ class Users::PasswordsController < Devise::PasswordsController
 
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
-    # self.resource = resource_class.find_by(reset_password_token: params[:reset_password_token])
-    # set_minimum_password_length
-    # if self.resource
-    #   render :edit
-    # else
-    #   redirect_to new_user_session_path, alert: "パスワードリセットトークンが無効です。"
-    # end
-    @token = params[:id]
-    @user = User.load_from_reset_password_token(@token)
-    not_authenticated if @user.blank?
+    self.resource = resource_class.find_by(reset_password_token: params[:reset_password_token])
+    set_minimum_password_length
+    if self.resource
+      render :edit
+    else
+      redirect_to new_user_session_path, alert: "パスワードリセットトークンが無効です。"
+    end
   end
 
   # PUT /resource/password
   def update
-    @token = params[:id]
+    @token = params[:reset_password_token]
     @user = User.load_from_reset_password_token(@token)
 
     return not_authenticated if @user.blank?

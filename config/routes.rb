@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   # 利用規約ページへのルートを追加
   get 'terms_of_service', to: 'shared#terms_of_service', as: :terms_of_service
 
+  get 'map', to: "shops#map", as: :map_shops
+
   # Defines the root path route ("/")
   root "tops#index"
 
@@ -36,8 +38,10 @@ Rails.application.routes.draw do
     end
 
     collection do
-      get :autocomplete
+      get :autocomplete, to: 'shops#autocomplete', as: :autocomplete
       get :favorites
+      get :map
+      get :search
     end
   end
 
@@ -47,5 +51,6 @@ Rails.application.routes.draw do
     end
   end
 
+  # 開発環境のみで LetterOpenerWeb
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end

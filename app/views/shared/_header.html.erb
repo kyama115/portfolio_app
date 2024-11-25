@@ -12,20 +12,19 @@
           <%= search_form_for @q, url: shops_path, method: :get, local: true, class: 'w-full' do |f| %>
             <div data-controller="autocomplete"
                  data-autocomplete-url-value="/shops/autocomplete"
-                 data-autocomplete-min-length-value="2"
-                 data-autocomplete-delay-value="300"
-                 role="combobox" 
-                 class="relative">
-              <%= f.search_field :title_or_description_or_area_or_scene_cont,
-                                 data: {
-                                   autocomplete_target: 'input',
-                                   action: 'input->autocomplete#search'
-                                 },
-                                 placeholder: "店舗名で検索",
-                                 class: "h-10 w-full px-4 bg-white text-black rounded-full focus:ring-2 focus:ring-blue-500" %>
-              <%= f.hidden_field :id_eq, data: { autocomplete_target: 'hidden'} %>
-              <ul data-autocomplete-target="results"
-                  class="absolute z-20 w-full mt-1 bg-white border border-current rounded-md shadow-lg max-h-60 overflow-auto"></ul>
+                 role="combobox"
+                 class="flex-grow w-full relative">
+              <%= f.search_field :title_or_description_or_area_or_budget_or_scene_or_address_cont,
+                data: {
+                  autocomplete_target: 'input',
+                  action: 'input->autocomplete#onInput focus->autocomplete#onFocus blur->autocomplete#onBlur'
+                },
+                class: 'input input-bordered w-full px-4 py-2 rounded-lg',
+                placeholder: "店舗名で検索" %>
+              <%= f.hidden_field :title, data: { autocomplete_target: 'hidden' } %>
+              <div data-autocomplete-target="results"
+                   class="hidden absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden z-50">
+              </div>
             </div>
           <% end %>
         <% end %>
@@ -43,8 +42,8 @@
 
         <!-- ハンバーガーメニュー -->
         <div class="ml-6 z-20">
-          <input type="checkbox" id="menu-toggle" class="hidden">
-          <label for="menu-toggle" class="cursor-pointer">
+          <input type="checkbox" id="menu-toggle" class="absolute w-0 h-0 opacity-0 pointer-events-none">
+          <label for="menu-toggle" class="cursor-pointer block">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
             </svg>

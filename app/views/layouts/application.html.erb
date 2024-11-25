@@ -1,39 +1,42 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <title><%= content_for(:title) || "シーシャ検索サイト" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= yield :head %>
-    <%= favicon_link_tag('smoke.png') %>
+<head>
+  <title><%= content_for(:title) || "シーシャ検索サイト" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= yield :head %>
+  <%= favicon_link_tag('smoke.png') %>
 
-    <link rel="manifest" href="/manifest.json">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
-    <%= javascript_importmap_tags %>
-    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}", defer: true %>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="204715424349-f1cntrm16gtel8ost2mvmll45uvrncnn.apps.googleusercontent.com">
+  <link rel="manifest" href="/manifest.json">
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  <%= javascript_importmap_tags %>
+  <%# <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_API_KEY']}&callback=initializeMaps",
+        async: true,
+        defer: true,
+        "data-turbolinks-eval": false %>
+       <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initializeMaps" async defer></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="204715424349-f1cntrm16gtel8ost2mvmll45uvrncnn.apps.googleusercontent.com">
 
-    <script src="https://kit.fontawesome.com/b5bf160816.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-  </head>
+  <script src="https://kit.fontawesome.com/b5bf160816.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+</head>
 
-  <body class="font-medium flex flex-col min-h-screen">
-    <% if user_signed_in? %>
-      <%= render 'shared/header' %>
-    <% else %>
-      <%= render 'shared/before_login_header' %>
-    <% end %>
-    <%= render 'shared/flash_message' %>
+<body class="font-medium flex flex-col min-h-screen">
+  <% if user_signed_in? %>
+    <%= render 'shared/header' %>
+  <% else %>
+    <%= render 'shared/before_login_header' %>
+  <% end %>
+  <%= render 'shared/flash_message' %>
 
-    <main class="flex-grow">
-      <%= breadcrumbs separator: " / ", class: "text-sm bg-gray-200 text-gray-600 p-4 " %>
-      <%= yield %>
-    </main>
+  <main class="flex-grow">
+    <%= breadcrumbs separator: " / ", class: "text-sm bg-gray-200 text-gray-600 p-4 " %>
+    <%= yield %>
+  </main>
 
-    <%= render "shared/footer" %>
-  </body>
-</html>
+  <%= render "shared/footer" %>
+</body>

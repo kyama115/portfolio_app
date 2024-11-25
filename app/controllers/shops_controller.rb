@@ -1,5 +1,5 @@
 class ShopsController < ApplicationController
-  skip_before_action :authenticate_user!, only: %i[index show]
+  skip_before_action :authenticate_user!, only: %i[index show autocomplete]
 
   def index
     @q = Shop.ransack(params[:q])
@@ -28,8 +28,18 @@ class ShopsController < ApplicationController
   end
 
   def autocomplete
-    @shops = Shop.where("title ILIKE ?", "%#{params[:q]}%").limit(5)
-    render json: @shops.map { |shop| { id: shop.id, title: shop.title } }
+    def auto_search
+      @shops = Shop.where("title ILIKE ?", "%#{params[:q]}%")
+      respond_to do |format|
+        format.js
+      end
+    end
+  end
+
+  def map
+    @q = Shop.ransack(params[:q])
+    @shops = @q.result(distinct: true)
+    # render json: { shops: @shops.as_json(only: [:id, :title, :latitude, :longitude]) }
   end
 
   private

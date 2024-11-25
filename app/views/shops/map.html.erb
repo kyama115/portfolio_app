@@ -1,0 +1,54 @@
+<!-- ransack検索フォーム -->
+<div class="flex-grow mx-4 py-4">
+  <% if @q %>
+    <%= search_form_for @q, url: shops_path, method: :get, local: true, class: 'w-full' do |f| %>
+      <div data-controller="autocomplete"
+           data-autocomplete-url-value="/shops/autocomplete"
+           role="combobox"
+           class="flex-grow w-full relative">
+        <%= f.search_field :title_or_description_or_area_or_budget_or_scene_or_address_cont,
+          data: {
+            autocomplete_target: 'input',
+            action: 'input->autocomplete#onInput focus->autocomplete#onFocus blur->autocomplete#onBlur'
+          },
+          class: 'input input-bordered w-full px-4 py-2 rounded-lg',
+          placeholder: "店舗名を入力" %>
+        <%= f.hidden_field :title, data: { autocomplete_target: 'hidden' } %>
+          <div data-autocomplete-target="results"
+               class="hidden absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden z-50">
+          </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<div id="loading" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 items-center justify-center z-50">
+  <div class="bg-white p-4 rounded-lg shadow-lg">
+    <p class="text-lg">位置情報を取得中...</p>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="md:col-span-2">
+    <div id="map" class="map h-[500px] w-full rounded-lg shadow-lg" style="margin-left: 1rem; margin-bottom: 1rem;">
+      <%# マップ読み込み中のローディングリング %>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <span class="loading loading-ring loading-lg"></span>
+      </div>
+    </div>
+  </div>
+
+    <div class="bg-white rounded-lg shadow-lg p-4">
+      <h2 class="text-xl font-bold mb-4">近くの店舗</h2>
+      <div id="shop-list" class="space-y-4 max-h-[450px] overflow-y-auto">
+        <!-- 店舗リストがここに動的に追加されます -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  initializeMaps();
+});
+</script>

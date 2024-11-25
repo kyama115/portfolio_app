@@ -18,7 +18,7 @@ class Shop < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[id title description area budget scene]
+    %w[id title description area budget scene address shop_number shop_url]
   end
 
   def self.ransackable_associations(_auth_object = nil)
@@ -32,8 +32,17 @@ class Shop < ApplicationRecord
 
   # 全文検索用のスコープ
   scope :search_full_text, ->(query) {
-    where("title ILIKE :q OR description ILIKE :q OR area ILIKE :q OR scene ILIKE :q", q: "%#{sanitize_sql_like(query)}%")
+    where(
+      "title ILIKE :q OR description ILIKE :q OR area ILIKE :q OR
+       CAST(budget AS TEXT) ILIKE :q OR scene ILIKE :q OR address ILIKE :q",
+      q: "%#{sanitize_sql_like(query)}%"
+    )
   }
+
+  # budgetカラムを文字列として検索するためのransacker
+  ransacker :budget do
+    Arel.sql("CAST(budget AS TEXT)")
+  end
 
   # 予算が指定された範囲内であるかを確認するメソッド
   def self.budget_between(min_budget, max_budget)
@@ -54,5 +63,16 @@ class Shop < ApplicationRecord
   # 利用用途に基づいてフィルタリングするメソッド
   def self.by_scene(scene)
     where(scene: scene)
+  end
+
+  # URLから画像を添付するメソッド
+  def display_image
+    if shop_image.attached?
+      Rails.application.routes.url_helpers.url_for(shop_image)
+    elsif shop_image_url.present?
+      shop_image_url
+    else
+      'shisha.jpg'
+    end
   end
 end

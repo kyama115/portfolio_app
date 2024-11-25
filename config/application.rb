@@ -22,11 +22,13 @@ module Myapp
     # libvipsを使用するように指定
     config.active_storage.variant_processor = :mini_magick
 
+    config.action_controller.forgery_protection_origin_check = false
+
     config.before_configuration do
       env_file = File.join(Rails.root, 'config', 'local_env.yml')
       YAML.load(File.open(env_file)).each do |key, value|
         ENV[key.to_s] = value
-      end if File.exists?(env_file)
+      end if File.exist?(env_file)
     end
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
