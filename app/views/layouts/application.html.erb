@@ -19,6 +19,15 @@
         "data-turbolinks-eval": false %>
        <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initializeMaps" async defer></script>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <!-- Google analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W13RJR9B3F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-W13RJR9B3F');
+  </script>
   <meta name="google-signin-client_id" content="204715424349-f1cntrm16gtel8ost2mvmll45uvrncnn.apps.googleusercontent.com">
 
   <script src="https://kit.fontawesome.com/b5bf160816.js" crossorigin="anonymous"></script>
