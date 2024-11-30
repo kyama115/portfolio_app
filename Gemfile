@@ -17,6 +17,8 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "cssbundling-rails"
+
+# gem "jsbundling-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
@@ -35,7 +37,9 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+# gem 'image_processing', '~> 1.13'
+# gem 'mini_magick', '~> 4.13'
+gem 'ruby-vips'
 
 gem "ransack", "4.2.1"
 gem "activestorage"
@@ -53,6 +57,11 @@ gem 'omniauth-rails_csrf_protection'
 gem "auth0", "~> 5.9"
 gem 'kaminari', '~> 1.2.2'
 gem 'config'
+# Use Sass to process CSS
+gem "dartsass-rails"
+# Gemfile
+gem 'roo'  # Excelファイルを読み込むため
+gem 'rubyXL'  # Excel形式の処理用
 
 
 group :development, :test do

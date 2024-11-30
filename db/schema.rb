@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_17_120947) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_27_111325) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_17_120947) do
     t.string "oauth_token"
     t.datetime "oauth_expires_at"
     t.string "unconfirmed_email"
+    t.string "role", default: "0", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true

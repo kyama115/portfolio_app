@@ -51,6 +51,24 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :admin do
+    root "dashboards#index"
+    resource :dashboard, only: %i[index]
+    resources :users do
+      member do
+        delete 'destroy_avatar', to: 'users#destroy_avatar', as: :destroy_avatar
+      end
+    end
+    resources :shops do
+      member do
+        delete 'destroy_image', to: 'shops#destroy_image', as: :destroy_image
+      end
+    end
+    get 'login' => 'sessions#new', :as => :login
+    post 'login' => "sessions#create"
+    delete 'logout' => 'sessions#destroy', :as => :logout
+  end
+
   # 開発環境のみで LetterOpenerWeb
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end

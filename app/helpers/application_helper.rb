@@ -1,6 +1,10 @@
 module ApplicationHelper
   include Devise::Controllers::Helpers
 
+  def active_if(path)
+    current_page?(path) ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
+  end
+
   def user_avatar(user, size = 100)
     if user&.avatar&.attached?
       user.avatar.variant(resize: "#{size}x#{size}!")

@@ -20,8 +20,11 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
   validates :nickname, length: { maximum: 20 }
   validate :password_match
-  validates :uid, uniqueness: { scope: :provider }
+  validates :uid, uniqueness: { scope: :provider }, if: -> { uid.present? && provider.present? }
   validates :reset_password_token, uniqueness: true, allow_nil: true
+  validates :role, presence: true
+
+  enum role: { user: '0', admin: '1' }
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -63,6 +66,14 @@ class User < ApplicationRecord
   def log(level, message)
     logger = OmniAuth.logger || Rails.logger
     logger.send(level, "(#{name}) #{message}")
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id name email nickname created_at updated_at role avatar avatar_cache]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    []
   end
 
   private

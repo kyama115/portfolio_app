@@ -1,0 +1,74 @@
+<% content_for :title do %>
+  店舗詳細
+<% end %>
+
+<div class="container">
+  <div class="row">
+    <div class="p-4 col-md-10 offset-md-1 col-lg-8 offset-lg-2 text-xl">
+      <h1>店舗詳細</h1>
+      <div class="text-right mb-3">
+        <%= link_to '編集', edit_admin_shop_path(@shop), class: 'btn bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded shadow-md mr-2' %>
+        <%= link_to '削除', admin_shop_path(@shop), method: :delete, data: { confirm: t('activerecord.defaults.delete_confirm') }, class: 'btn bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded shadow-md' %>
+      </div>
+      <table class="table table-bordered bg-white">
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:id) %></th>
+          <td><%= @shop.id %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:title) %></th>
+          <td><%= @shop.title %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:description) %></th>
+          <td><%= @shop.description %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:area) %></th>
+          <td><%= @shop.area %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:budget) %></th>
+          <td><%= @shop.budget %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:scene) %></th>
+          <td><%= @shop.scene %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:opening_hours) %></th>
+          <td><%= @shop.opening_hours %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:shop_number) %></th>
+          <td><%= @shop.shop_number %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:shop_url) %></th>
+          <td><%= @shop.shop_url %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:latitude) %></th>
+          <td><%= @shop.latitude %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:longitude) %></th>
+          <td><%= @shop.longitude %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:created_at) %></th>
+          <td><%= l @shop.created_at, format: :long %></td>
+        </tr>
+        <tr>
+          <th scope="row"><%= Shop.human_attribute_name(:shop_image) %></th>
+          <% if @shop.shop_image.attached? %>
+            <td><%= image_tag(url_for(@shop.shop_image.variant(resize: '300x300'))) %></td>
+          <% else %>
+            <td>画像がありません</td>
+          <% end %>
+        </tr>
+      </table>
+      <%= link_to "戻る", :back, class: "tracking-widest pt-6 flex flex-col w-full text-center text-sm text-black hover:underline" %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<% content_for(:title, '新規店舗作成') %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="mx-auto max-w-3xl">
+    <%= form_with(model: [:admin, @shop], local: true, class: 'space-y-6', data: { turbo: false }) do |f| %>
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">新規店舗作成</h1>
+        </div>
+      </div>
+
+      <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl">
+        <div class="px-6 py-6 sm:p-8">
+          <div class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+            <!-- 店舗名 -->
+            <div class="sm:col-span-4">
+              <%= f.label :title, "店舗名", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :title, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "店舗名を入力" %>
+            </div>
+
+            <!-- 説明 -->
+            <div class="col-span-full">
+              <%= f.label :description, "説明", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_area :description, rows: 4, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "店舗の説明を入力" %>
+            </div>
+
+            <!-- エリア -->
+            <div class="sm:col-span-3">
+              <%= f.label :area, "エリア", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :area, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "エリアを入力" %>
+            </div>
+
+            <!-- 予算 -->
+            <div class="sm:col-span-3">
+              <%= f.label :budget, "予算", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :budget, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "予算を入力" %>
+            </div>
+
+            <!-- シーン -->
+            <div class="sm:col-span-3">
+              <%= f.label :scene, "シーン", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :scene, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "シーンを入力" %>
+            </div>
+
+            <!-- 営業時間 -->
+            <div class="sm:col-span-3">
+              <%= f.label :opening_hours, "営業時間", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :opening_hours, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "営業時間を入力" %>
+            </div>
+
+            <!-- 店舗番号 -->
+            <div class="sm:col-span-3">
+              <%= f.label :shop_number, "店舗番号", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :shop_number, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "店舗番号を入力" %>
+            </div>
+            <!-- shop_url -->
+            <div class="sm:col-span-3">
+              <%= f.label :shop_url, "店舗URL", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :shop_url, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "店舗URLを入力" %>
+            </div>
+            <!-- latitude -->
+            <div class="sm:col-span-3">
+              <%= f.label :latitude, "緯度", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :latitude, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "緯度を入力" %>
+            </div>
+            <!-- longitude -->
+            <div class="sm:col-span-3">
+              <%= f.label :longitude, "経度", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :longitude, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "経度を入力" %>
+            </div>
+            <!-- 画像 -->
+            <div class="sm:col-span-3">
+              <%= f.label :shop_image, "画像", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.file_field :shop_image, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end space-x-4 pt-6">
+        <%= f.submit "作成する", class: "rounded-md bg-gray-800 px-8 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors duration-200" %>
+      </div>
+    <% end %>
+    <%= link_to "戻る", :back, class: "tracking-widest pt-6 flex flex-col w-full text-center text-sm text-black hover:underline" %>
+  </div>
+</div>

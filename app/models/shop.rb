@@ -1,14 +1,16 @@
 class Shop < ApplicationRecord
   require 'geocoder'
 
-  has_many :users, through: :reviews
   has_many :reviews, dependent: :destroy
+  has_many :users, through: :reviews
   has_many :favorites, dependent: :destroy
 
   has_one_attached :shop_image
+  has_many_attached :shop_images
 
   validates :title, presence: true, length: { maximum: 255 }
-  validates :description, presence: true, length: { maximum: 65_535 }
+  validates :description, length: { maximum: 65_535 }
+
 
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
@@ -18,7 +20,7 @@ class Shop < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[id title description area budget scene address shop_number shop_url]
+    %w[id title address description area budget scene opening_hours shop_number shop_url created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)

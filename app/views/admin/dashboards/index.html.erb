@@ -1,0 +1,13 @@
+<div class="container mx-auto mt-8 mb-8">
+  <h1 class="text-2xl font-bold mb-4">管理者ダッシュボード</h1>
+  <div class="grid grid-cols-2 gap-4">
+    <%= link_to admin_users_path, class: "bg-white p-4 shadow rounded" do %>
+      <p class="font-semibold">全ユーザー数:</p>
+      <p class="text-xl"><%= @users.count %></p>
+    <% end %>
+    <%= link_to admin_shops_path, class: "bg-white p-4 shadow rounded" do %>
+      <p class="font-semibold">全店舗数:</p>
+      <p class="text-xl"><%= @shops.count %></p>
+    <% end %>
+  </div>
+</div>

@@ -1,5 +1,10 @@
 require "active_support/core_ext/integer/time"
 
+# Active StorageのURLオプションの設定
+Rails.application.config.to_prepare do
+  ActiveStorage::Current.url_options = { protocol: 'http', host: 'localhost', port: 3000 }
+end
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -33,6 +38,13 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
+  # Active Storageの設定
+  config.active_storage.routes_prefix = '/files'
+  config.active_storage.resolve_model_to_route = :rails_storage_proxy
+  # URLオプションの設定
+  config.active_storage.default_url_options = { host: 'localhost', port: 3000 }
+  config.active_storage.variant_processsor = :vips
+  config.active_storage.variant_processsor = :mini_magick
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
