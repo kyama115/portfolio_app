@@ -5,7 +5,8 @@ class Admin::UsersController < Admin::BaseController
 
   def index
     @q = User.ransack(params[:q])
-    @users = @q.result(distinct: true).order(created_at: :desc).page(params[:page])
+    sort_order = params[:order] == 'desc' ? { created_at: :desc } : { created_at: :asc }
+    @users = @q.result(distinct: true).order(sort_order).page(params[:page])
     @total_users_count = User.count
   end
 

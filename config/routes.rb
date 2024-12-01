@@ -61,7 +61,7 @@ Rails.application.routes.draw do
     end
     resources :shops do
       member do
-        delete 'destroy_image', to: 'shops#destroy_image', as: :destroy_image
+        delete 'destroy_image', to: 'admin/shops#destroy_image', as: :destroy_image
       end
     end
     get 'login' => 'sessions#new', :as => :login

@@ -14,6 +14,15 @@
     <div class="col-md-12 mb-3">
       <%= render 'search_form' %>
     </div>
+    <div class="mb-4">
+      <label for="sort_order" class="mr-2">並び替え:</label>
+      <select id="sort_order" class="form-control" onchange="location = this.value;">
+        <option value="<%= request.original_url %>">選択してください</option>
+        <option value="<%= url_for(request.params.merge(order: :asc)) %>">ID 昇順</option>
+        <option value="<%= url_for(request.params.merge(order: :desc)) %>">ID 降順</option>
+      </select>
+    </div>
+
   </div>
   <div class="row">
     <div class="col-md-12">
@@ -43,3 +52,11 @@
     </div>
   </div>
 </div>
+
+<script>
+  function redirectToSortOrder(url) {
+    if (url) {
+      window.location = url;
+    }
+  }
+</script>

@@ -167,8 +167,6 @@
                 <div class="flex items-center space-x-6">
                   <div class="relative">
                     <%= image_tag(url_for(@shop.shop_image.variant(resize: '300x300')), class: "h-40 w-40 object-cover rounded-lg") %>
-                    <div class="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-lg"></div>
-                    <%= button_to '画像を削除', { action: :destroy_image, id: @shop.id }, method: :delete, class: "ml-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" %>
                   </div>
                 </div>
               <% end %>

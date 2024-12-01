@@ -5,7 +5,8 @@ class Admin::ShopsController < Admin::BaseController
 
   def index
     @q = Shop.ransack(params[:q])
-    @shops = @q.result(distinct: true).includes(%i[users]).order(created_at: :asc).page(params[:page])
+    sort_order = params[:order] == 'desc' ? { created_at: :desc } : { created_at: :asc }
+    @shops = @q.result(distinct: true).includes(%i[users]).order(sort_order).page(params[:page])
     @total_shops_count = Shop.count
   end
 
