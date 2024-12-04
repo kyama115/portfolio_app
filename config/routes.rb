@@ -33,14 +33,12 @@ Rails.application.routes.draw do
   resources :shops do
     resources :reviews, only: %i[new edit create destroy], shallow: true
     member do
-      post 'favorite', to: 'favorites#create'    # createアクション用
-      delete 'favorite', to: 'favorites#destroy' # destroyアクション用
+      post 'favorite', to: 'favorites#create'
+      delete 'favorite', to: 'favorites#destroy'
     end
-
     collection do
-      get :autocomplete, to: 'shops#autocomplete', as: :autocomplete
+      get :autocomplete
       get :favorites
-      get :map
       get :search
     end
   end
@@ -68,6 +66,10 @@ Rails.application.routes.draw do
     post 'login' => "sessions#create"
     delete 'logout' => 'sessions#destroy', :as => :logout
   end
+
+  # namespace :api do
+  #   resources :shops, only: [:index]
+  # end
 
   # 開発環境のみで LetterOpenerWeb
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?

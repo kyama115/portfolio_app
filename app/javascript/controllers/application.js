@@ -1,5 +1,5 @@
 import { Application } from "@hotwired/stimulus"
-import { Autocomplete } from 'stimulus-autocomplete'
+import complete from './autocomplete_controller.js'
 
 const application = Application.start()
 application.register('autocomplete', Autocomplete)

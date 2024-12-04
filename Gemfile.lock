@@ -157,6 +157,7 @@ GEM
       csv (>= 3.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    gmaps4rails (2.1.2)
     gretel (5.0.1)
       actionview (>= 6.1)
       railties (>= 6.1)
@@ -478,6 +479,7 @@ DEPENDENCIES
   dotenv-rails
   error_highlight (>= 0.4.0)
   geocoder
+  gmaps4rails
   gretel (~> 5.0)
   image_processing (~> 1.13)
   importmap-rails

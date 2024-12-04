@@ -28,18 +28,46 @@ class ShopsController < ApplicationController
   end
 
   def autocomplete
-    def auto_search
-      @shops = Shop.where("title ILIKE ?", "%#{params[:q]}%")
-      respond_to do |format|
-        format.js
-      end
-    end
+    @shops = Shop.where("title ILIKE ?", "%#{params[:q]}%").limit(5)
+    render json: @shops.map { |shop| { id: shop.id, name: shop.title } }
   end
 
   def map
+    @shops = Shop.all
     @q = Shop.ransack(params[:q])
-    @shops = @q.result(distinct: true)
-    # render json: { shops: @shops.as_json(only: [:id, :title, :latitude, :longitude]) }
+
+    respond_to do |format|
+      format.html
+      format.json do
+        begin
+          if params[:lat].present? && params[:lng].present?
+            lat = Float(params[:lat])
+            lng = Float(params[:lng])
+
+            Rails.logger.info "Searching shops near: [#{lat}, #{lng}]"
+
+            # まずデータベースに店舗があるか確認
+            total_shops = Shop.count
+            shops_with_coords = Shop.where.not(latitude: nil, longitude: nil).count
+            Rails.logger.info "Total shops: #{total_shops}, Shops with coordinates: #{shops_with_coords}"
+
+            @shops = Shop.where.not(latitude: nil, longitude: nil)
+            Rails.logger.info "Found #{@shops.count} shops with coordinates"
+
+          else
+            @shops = Shop.where.not(latitude: nil, longitude: nil)
+          end
+
+          render json: @shops.as_json(
+            only: [:id, :title, :latitude, :longitude, :address, :description]
+          )
+        rescue => e
+          Rails.logger.error "Error in map action: #{e.class.name} : #{e.message}"
+          Rails.logger.error e.backtrace.join("\n")
+          render json: { error: e.message }, status: :internal_server_error
+        end
+      end
+    end
   end
 
   private
@@ -49,10 +77,10 @@ class ShopsController < ApplicationController
   end
 
   def shop_params
-    params.require(:shop).permit(:title, :description, :area, :budget, :scene, :shop_image, :shop_image_cache)
+    params.require(:shop).permit(:title, :description, :area, :budget, :scene, :shop_image, :shop_image_cache, :lat, :lng, :format)
   end
 
   def search_params
-    params.require(:q).permit(:title_or_description_or_area_or_scene_cont, :id_eq)
+    params.require(:q).permit(:title_or_description_or_area_or_scene_cont, :id_eq, :lat, :lng, :format)
   end
 end

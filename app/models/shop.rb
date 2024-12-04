@@ -10,10 +10,16 @@ class Shop < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, length: { maximum: 65_535 }
-
+  validates :latitude, numericality: { allow_nil: true }
+  validates :longitude, numericality: { allow_nil: true }
 
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
+
+  # 有効な座標を持つレコードのみを返すスコープ
+  scope :with_valid_coordinates, -> {
+    where.not(latitude: nil, longitude: nil)
+  }
 
   def favorite_by?(user)
     favorites.exists?(user_id: user.id)

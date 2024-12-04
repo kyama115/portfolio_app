@@ -10,7 +10,7 @@
       <div class="flex-grow mx-4">
         <% if @q %>
           <%= search_form_for @q, url: shops_path, method: :get, local: true, class: 'w-full' do |f| %>
-            <div data-controller="autocomplete"
+            <div data-controller="autocomplete", id='header-autocomplete-input'
                  data-autocomplete-url-value="/shops/autocomplete"
                  role="combobox"
                  class="flex-grow w-full relative">
@@ -22,7 +22,7 @@
                 class: 'input input-bordered w-full px-4 py-2 rounded-lg',
                 placeholder: "店舗名で検索" %>
               <%= f.hidden_field :title, data: { autocomplete_target: 'hidden' } %>
-              <div data-autocomplete-target="results"
+              <div data-autocomplete-target="results", id='header-autocomplete-results'
                    class="hidden absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden z-50">
               </div>
             </div>
@@ -84,3 +84,117 @@
     transform: translateX(0);
   }
 </style>
+
+<!-- オートコンプリート機能のスクリプト -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // ヘッダー用のオートコンプリート
+  const headerFormElement = document.getElementById('header-autocomplete-input');
+  if (!headerFormElement) return;
+
+  const headerSearchInput = headerFormElement.querySelector('input[type="search"]');
+  if (!headerSearchInput) return;
+
+  const headerResultsDiv = document.getElementById('header-autocomplete-results');
+  if (!headerResultsDiv) return;
+
+  let headerTimeout = null;
+
+  function hideHeaderResults() {
+    headerResultsDiv.classList.add('hidden');
+  }
+
+  function showHeaderResults() {
+    headerResultsDiv.classList.remove('hidden');
+  }
+
+  async function fetchAndShowHeaderResults(query) {
+    if (!query.trim()) {
+      hideHeaderResults();
+      return;
+    }
+
+    try {
+      const response = await fetch(`/shops/autocomplete?q=${encodeURIComponent(query.trim())}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const shops = await response.json();
+      
+      if (!shops || shops.length === 0) {
+        headerResultsDiv.innerHTML = '<div class="p-2 text-gray-500">検索結果がありません</div>';
+      } else {
+        // 検索結果の表示
+        headerResultsDiv.innerHTML = shops.map(shop => `
+          <div class="p-2 hover:bg-gray-100 cursor-pointer" 
+               data-shop-id="${shop.id}" 
+               data-shop-name="${shop.name}">
+            ${shop.name}
+          </div>
+        `).join('');
+
+        // 検索結果クリックイベントの設定
+        headerResultsDiv.querySelectorAll('div[data-shop-id]').forEach(div => {
+          div.addEventListener('click', function() {
+            const shopName = this.getAttribute('data-shop-name');
+            const shopId = this.getAttribute('data-shop-id');
+            headerSearchInput.value = shopName;
+            hideHeaderResults();
+
+            // 店舗の詳細ページへ遷移
+            window.location.href = `/shops/${shopId}`;
+          });
+        });
+      }
+
+      showHeaderResults();
+    } catch (error) {
+      console.error('Error fetching autocomplete results:', error);
+      headerResultsDiv.innerHTML = '<div class="p-2 text-red-500">検索中にエラーが発生しました</div>';
+    }
+  }
+
+  // 入力イベントの処理（デバウンス処理付き）
+  headerSearchInput.addEventListener('input', function(e) {
+    if (headerTimeout) {
+      clearTimeout(headerTimeout);
+    }
+    
+    headerTimeout = setTimeout(() => {
+      fetchAndShowHeaderResults(e.target.value);
+    }, 300);
+  });
+
+  // フォーカスイベントの処理
+  headerSearchInput.addEventListener('focus', function() {
+    if (this.value.trim()) {
+      fetchAndShowHeaderResults(this.value);
+    }
+  });
+
+  // クリック時の処理
+  document.addEventListener('click', function(e) {
+    if (!headerFormElement.contains(e.target)) {
+      hideHeaderResults();
+    }
+  });
+
+  // フォーム送信時の処理
+  headerFormElement.closest('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (headerSearchInput.value.trim()) {
+      // 検索ページへリダイレクト
+      window.location.href = `/shops?q[title_or_description_or_area_or_budget_or_scene_or_address_cont]=${encodeURIComponent(headerSearchInput.value.trim())}`;
+    }
+  });
+});
+</script>

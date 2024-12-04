@@ -7,3 +7,4 @@
 //= link controllers/autocomplete_controller.js
 //= link controllers/maps.js
 //= link admin.js
+//= link application.js
