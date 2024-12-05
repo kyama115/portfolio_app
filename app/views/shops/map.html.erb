@@ -364,22 +364,36 @@ function showErrorMessage(message) {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const formElement = document.getElementById('pac-input');
-  if (!formElement) return;
-
+  if (!formElement) {
+    console.error('Search form not found');
+    return;
+  }
+  
   const searchInput = formElement.querySelector('input[type="search"]');
-  if (!searchInput) return;
-
+  if (!searchInput) {
+    console.error('Search input not found');
+    return;
+  }
+  
   const resultsDiv = document.getElementById('autocomplete-results');
-  if (!resultsDiv) return;
+  if (!resultsDiv) {
+    console.error('Results container not found');
+    return;
+  }
 
   let currentTimeout = null;
+  let currentFocusIndex = -1;
+  let resultsVisible = false;
 
   function hideResults() {
     resultsDiv.classList.add('hidden');
+    resultsVisible = false;
+    currentFocusIndex = -1;
   }
 
   function showResults() {
     resultsDiv.classList.remove('hidden');
+    resultsVisible = true;
   }
 
   async function fetchAndShowResults(query) {
@@ -395,7 +409,8 @@ document.addEventListener('DOMContentLoaded', function() {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
-        }
+        },
+        credentials: 'same-origin'
       });
 
       if (!response.ok) {
@@ -403,114 +418,157 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       const shops = await response.json();
-      
+      console.log('Received shops:', shops); // デバッグ用
+
       if (!shops || shops.length === 0) {
         resultsDiv.innerHTML = '<div class="p-2 text-gray-500">検索結果がありません</div>';
       } else {
-        // 検索結果の表示
-        resultsDiv.innerHTML = shops.map(shop => `
-          <div class="p-2 hover:bg-gray-100 cursor-pointer" 
-               data-shop-id="${shop.id}" 
-               data-shop-name="${shop.name}">
+        resultsDiv.innerHTML = shops.map((shop, index) => `
+          <div class="p-2 hover:bg-gray-100 cursor-pointer"
+               data-shop-id="${shop.id}"
+               data-shop-name="${shop.name}"
+               data-index="${index}"
+               role="option"
+               aria-selected="false">
             ${shop.name}
           </div>
         `).join('');
 
-        // 検索結果クリックイベントの設定
-        resultsDiv.querySelectorAll('div[data-shop-id]').forEach(div => {
+        // 結果クリックイベントの設定
+        resultsDiv.querySelectorAll('[data-shop-id]').forEach(div => {
           div.addEventListener('click', function() {
             const shopName = this.getAttribute('data-shop-name');
             searchInput.value = shopName;
             hideResults();
 
-            // 位置の取得と地図の更新
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ address: shopName }, function(results, status) {
-              if (status === 'OK' && results[0]) {
-                const location = results[0].geometry.location;
-                
-                map.setCenter(location);
-                map.setZoom(16);
+            const shopId = this.getAttribute('data-shop-id');
+            handleShopSelection(shopName);
+          });
 
-                if (currentLocationMarker) {
-                  currentLocationMarker.setMap(null);
-                }
-
-                currentLocationMarker = new google.maps.Marker({
-                  position: location,
-                  map: map,
-                  icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    fillColor: '#4285F4',
-                    fillOpacity: 1,
-                    scale: 10,
-                    strokeColor: 'white',
-                    strokeWeight: 2
-                  },
-                  title: '検索場所',
-                  zIndex: 999
-                });
-
-                fetchShopsFromDatabase({
-                  lat: location.lat(),
-                  lng: location.lng()
-                });
-              }
-            });
+          div.addEventListener('mouseenter', function() {
+            currentFocusIndex = parseInt(this.getAttribute('data-index'));
+            updateFocus();
           });
         });
       }
 
       showResults();
     } catch (error) {
-      console.error('Error fetching autocomplete results:', error);
+      console.error('Error fetching results:', error);
       resultsDiv.innerHTML = '<div class="p-2 text-red-500">検索中にエラーが発生しました</div>';
     }
   }
 
-  // 入力イベントの処理（デバウンス処理付き）
+  function handleShopSelection(shopName) {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: shopName }, function(results, status) {
+      if (status === 'OK' && results[0]) {
+        const location = results[0].geometry.location;
+        map.setCenter(location);
+        map.setZoom(16);
+        
+        if (currentLocationMarker) {
+          currentLocationMarker.setMap(null);
+        }
+        
+        currentLocationMarker = new google.maps.Marker({
+          position: location,
+          map: map,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: '#4285F4',
+            fillOpacity: 1,
+            scale: 10,
+            strokeColor: 'white',
+            strokeWeight: 2
+          },
+          title: shopName,
+          zIndex: 999
+        });
+
+        fetchShopsFromDatabase({
+          lat: location.lat(),
+          lng: location.lng()
+        });
+      }
+    });
+  }
+
+  function updateFocus() {
+    const items = resultsDiv.querySelectorAll('[data-shop-id]');
+    items.forEach((item, index) => {
+      if (index === currentFocusIndex) {
+        item.classList.add('bg-gray-100');
+        item.setAttribute('aria-selected', 'true');
+      } else {
+        item.classList.remove('bg-gray-100');
+        item.setAttribute('aria-selected', 'false');
+      }
+    });
+  }
+
+  searchInput.addEventListener('keydown', function(e) {
+    if (!resultsVisible) return;
+
+    const items = resultsDiv.querySelectorAll('[data-shop-id]');
+    const itemCount = items.length;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        currentFocusIndex = (currentFocusIndex + 1) % itemCount;
+        updateFocus();
+        break;
+
+      case 'ArrowUp':
+        e.preventDefault();
+        currentFocusIndex = currentFocusIndex <= 0 ? itemCount - 1 : currentFocusIndex - 1;
+        updateFocus();
+        break;
+
+      case 'Enter':
+        e.preventDefault();
+        if (currentFocusIndex >= 0 && items[currentFocusIndex]) {
+          const selectedShopName = items[currentFocusIndex].getAttribute('data-shop-name');
+          searchInput.value = selectedShopName;
+          handleShopSelection(selectedShopName);
+          hideResults();
+        }
+        break;
+
+      case 'Escape':
+        hideResults();
+        searchInput.blur();
+        break;
+    }
+  });
+
   searchInput.addEventListener('input', function(e) {
     if (currentTimeout) {
       clearTimeout(currentTimeout);
     }
-    
     currentTimeout = setTimeout(() => {
       fetchAndShowResults(e.target.value);
     }, 300);
   });
 
-  // フォーカスイベントの処理
   searchInput.addEventListener('focus', function() {
     if (this.value.trim()) {
       fetchAndShowResults(this.value);
     }
   });
 
-  // クリック時の処理
   document.addEventListener('click', function(e) {
     if (!formElement.contains(e.target)) {
       hideResults();
     }
   });
 
-  // フォーム送信時の処理
   formElement.addEventListener('submit', function(e) {
     e.preventDefault();
-    if (searchInput.value.trim()) {
-      const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({ address: searchInput.value }, function(results, status) {
-        if (status === 'OK' && results[0]) {
-          const location = results[0].geometry.location;
-          map.setCenter(location);
-          map.setZoom(16);
-          fetchShopsFromDatabase({
-            lat: location.lat(),
-            lng: location.lng()
-          });
-        } else {
-          showErrorMessage('指定した場所が見つかりませんでした。');
-        }
-      });
+    const searchValue = searchInput.value.trim();
+    if (searchValue) {
+      handleShopSelection(searchValue);
     }
   });
 });

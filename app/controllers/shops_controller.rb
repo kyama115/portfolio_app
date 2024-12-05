@@ -6,7 +6,7 @@ class ShopsController < ApplicationController
     @shops = @q.result(distinct: true)
 
     @shops = @shops.budget_range(params[:budget_range]) if params[:budget_range].present?
-    @shops = @shops.by_area(params[:area]) if params[:area].present?
+    @shops = @shops.by_area(normalize_area(params[:area])) if params[:area].present?
     @shops = @shops.by_scene(params[:scene]) if params[:scene].present?
 
     @shops = @shops.includes(:shop_image_attachment)
@@ -82,5 +82,12 @@ class ShopsController < ApplicationController
 
   def search_params
     params.require(:q).permit(:title_or_description_or_area_or_scene_cont, :id_eq, :lat, :lng, :format)
+  end
+
+  def normalize_area(area)
+    return nil unless area
+
+    # 区と市を除去するパターン
+    area.gsub(/(区|市)$/, '').strip
   end
 end

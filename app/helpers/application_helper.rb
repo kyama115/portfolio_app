@@ -15,10 +15,12 @@ module ApplicationHelper
   end
 
   def shop_image(shop, size = 100)
-    if shop&.shop_image&.attached?
-      shop.shop_image.variant(resize: "#{size}x#{size}!")
-    else
-      "shisha.jpg"
+    def shop_display_image(shop)
+      if shop.image_url.present?
+        shop.display_image
+      else
+        "shisha.jpg"
+      end
     end
   end
 

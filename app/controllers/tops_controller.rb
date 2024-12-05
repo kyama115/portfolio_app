@@ -7,9 +7,7 @@ class TopsController < ApplicationController
   end
 
   def autocomplete
-    @shops = Shop.where('title LIKE ?', "%#{params[:q]}%")
-    respond_to do |format|
-      format.js
-    end
+    @shops = Shop.where("name ILIKE ?", "%#{params[:q]}%")
+    render json: @shops.pluck(:name).map { |name| { name: name } }
   end
 end

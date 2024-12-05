@@ -16,8 +16,8 @@
                  class="flex-grow w-full relative">
               <%= f.search_field :title_or_description_or_area_or_budget_or_scene_or_address_cont,
                 data: {
-                  autocomplete_target: 'input',
-                  action: 'input->autocomplete#onInput focus->autocomplete#onFocus blur->autocomplete#onBlur'
+                  autocomplete_target: 'input'
+                  # action: 'input->autocomplete#onInput focus->autocomplete#onFocus blur->autocomplete#onBlur'
                 },
                 class: 'input input-bordered w-full px-4 py-2 rounded-lg',
                 placeholder: "店舗名で検索" %>
@@ -68,6 +68,7 @@
                 <% end %>
                 <%= link_to 'ホーム', root_path, class: "block text-white hover:text-gray-300 hover:underline" %>
                 <%= link_to '店舗一覧', shops_path, class: "block text-white hover:text-gray-300 hover:underline" %>
+                <%= link_to 'お気に入り一覧', favorites_shops_path, class: "block text-white hover:text-gray-300 hover:underline" %>
                 <%= link_to 'マイページ', user_path(current_user), class: "block text-white hover:text-gray-300 hover:underline" %>
                 <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: "block text-white hover:text-gray-300 hover:underline bg-transparent border-none cursor-pointer p-0 w-full text-left" %>
               </nav>
@@ -85,27 +86,110 @@
   }
 </style>
 
+<!-- ドロワーメニューのスクリプト -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // ... 既存のコード ...
+
+  // メニュートグルのチェックボックス
+  const menuToggle = document.getElementById('menu-toggle');
+
+  // ドロワーメニューの外側をクリックしたときにメニューを閉じる
+  document.addEventListener('click', function(e) {
+    if (!headerFormElement.contains(e.target) && !menuToggle.contains(e.target) && menuToggle.checked) {
+      menuToggle.checked = false;
+    }
+    hideHeaderResults();
+  });
+});
+</script>
+
 <!-- オートコンプリート機能のスクリプト -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // ヘッダー用のオートコンプリート
-  const headerFormElement = document.getElementById('header-autocomplete-input');
-  if (!headerFormElement) return;
+  const headerFormElement = document.querySelector('[data-controller="autocomplete"]');
+  if (!headerFormElement) {
+    console.error('Autocomplete container not found');
+    return;
+  }
 
-  const headerSearchInput = headerFormElement.querySelector('input[type="search"]');
-  if (!headerSearchInput) return;
+  const headerSearchInput = headerFormElement.querySelector('[data-autocomplete-target="input"]');
+  if (!headerSearchInput) {
+    console.error('Search input not found');
+    return;
+  }
 
-  const headerResultsDiv = document.getElementById('header-autocomplete-results');
-  if (!headerResultsDiv) return;
+  const headerResultsDiv = headerFormElement.querySelector('[data-autocomplete-target="results"]');
+  if (!headerResultsDiv) {
+    console.error('Results container not found');
+    return;
+  }
 
   let headerTimeout = null;
+  let currentFocusIndex = -1;
+  let resultsVisible = false;
 
   function hideHeaderResults() {
     headerResultsDiv.classList.add('hidden');
+    resultsVisible = false;
+    currentFocusIndex = -1;
   }
 
   function showHeaderResults() {
     headerResultsDiv.classList.remove('hidden');
+    resultsVisible = true;
+  }
+
+  function updateFocus() {
+    const items = headerResultsDiv.querySelectorAll('[data-shop-id]');
+    items.forEach((item, index) => {
+      if (index === currentFocusIndex) {
+        item.classList.add('bg-gray-100');
+        item.setAttribute('aria-selected', 'true');
+        // スクロールして選択項目が見えるようにする
+        item.scrollIntoView({ block: 'nearest' });
+      } else {
+        item.classList.remove('bg-gray-100');
+        item.setAttribute('aria-selected', 'false');
+      }
+    });
+  }
+
+  function handleKeyNavigation(e) {
+    if (!resultsVisible) return;
+
+    const items = headerResultsDiv.querySelectorAll('[data-shop-id]');
+    const itemCount = items.length;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        currentFocusIndex = (currentFocusIndex + 1) % itemCount;
+        updateFocus();
+        break;
+
+      case 'ArrowUp':
+        e.preventDefault();
+        currentFocusIndex = currentFocusIndex <= 0 ? itemCount - 1 : currentFocusIndex - 1;
+        updateFocus();
+        break;
+
+      case 'Enter':
+        e.preventDefault();
+        if (currentFocusIndex >= 0 && currentFocusIndex < itemCount) {
+          const selectedItem = items[currentFocusIndex];
+          const shopId = selectedItem.getAttribute('data-shop-id');
+          headerSearchInput.value = selectedItem.textContent.trim();
+          hideHeaderResults();
+          window.location.href = `/shops/${shopId}`;
+        }
+        break;
+
+      case 'Escape':
+        hideHeaderResults();
+        headerSearchInput.blur();
+        break;
+    }
   }
 
   async function fetchAndShowHeaderResults(query) {
@@ -121,7 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
-        }
+        },
+        credentials: 'same-origin'
       });
 
       if (!response.ok) {
@@ -129,46 +214,57 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       const shops = await response.json();
-      
+
       if (!shops || shops.length === 0) {
         headerResultsDiv.innerHTML = '<div class="p-2 text-gray-500">検索結果がありません</div>';
-      } else {
-        // 検索結果の表示
-        headerResultsDiv.innerHTML = shops.map(shop => `
-          <div class="p-2 hover:bg-gray-100 cursor-pointer" 
-               data-shop-id="${shop.id}" 
-               data-shop-name="${shop.name}">
-            ${shop.name}
-          </div>
-        `).join('');
-
-        // 検索結果クリックイベントの設定
-        headerResultsDiv.querySelectorAll('div[data-shop-id]').forEach(div => {
-          div.addEventListener('click', function() {
-            const shopName = this.getAttribute('data-shop-name');
-            const shopId = this.getAttribute('data-shop-id');
-            headerSearchInput.value = shopName;
-            hideHeaderResults();
-
-            // 店舗の詳細ページへ遷移
-            window.location.href = `/shops/${shopId}`;
-          });
-        });
+        showHeaderResults();
+        return;
       }
 
+      headerResultsDiv.innerHTML = shops.map(shop => `
+        <div class="p-2 hover:bg-gray-100 cursor-pointer" 
+             data-shop-id="${shop.id}"
+             role="option"
+             aria-selected="false"
+             tabindex="0">
+          ${shop.name}
+        </div>
+      `).join('');
+
+      // 検索結果クリックイベントの設定
+      headerResultsDiv.querySelectorAll('[data-shop-id]').forEach(div => {
+        div.addEventListener('click', function() {
+          const shopId = this.getAttribute('data-shop-id');
+          headerSearchInput.value = this.textContent.trim();
+          hideHeaderResults();
+          window.location.href = `/shops/${shopId}`;
+        });
+
+        div.addEventListener('mouseover', function() {
+          const items = headerResultsDiv.querySelectorAll('[data-shop-id]');
+          currentFocusIndex = Array.from(items).indexOf(this);
+          updateFocus();
+        });
+      });
+
       showHeaderResults();
+      currentFocusIndex = -1; // リセット
     } catch (error) {
       console.error('Error fetching autocomplete results:', error);
       headerResultsDiv.innerHTML = '<div class="p-2 text-red-500">検索中にエラーが発生しました</div>';
+      showHeaderResults();
     }
   }
+
+  // キーボードイベントの追加
+  headerSearchInput.addEventListener('keydown', handleKeyNavigation);
 
   // 入力イベントの処理（デバウンス処理付き）
   headerSearchInput.addEventListener('input', function(e) {
     if (headerTimeout) {
       clearTimeout(headerTimeout);
     }
-    
+
     headerTimeout = setTimeout(() => {
       fetchAndShowHeaderResults(e.target.value);
     }, 300);
@@ -181,20 +277,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // クリック時の処理
-  document.addEventListener('click', function(e) {
-    if (!headerFormElement.contains(e.target)) {
-      hideHeaderResults();
-    }
+  // クリック時の処理（イベント伝播の停止を追加）
+  headerFormElement.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+
+  document.addEventListener('click', function() {
+    hideHeaderResults();
   });
 
   // フォーム送信時の処理
-  headerFormElement.closest('form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (headerSearchInput.value.trim()) {
-      // 検索ページへリダイレクト
-      window.location.href = `/shops?q[title_or_description_or_area_or_budget_or_scene_or_address_cont]=${encodeURIComponent(headerSearchInput.value.trim())}`;
-    }
-  });
+  const form = headerFormElement.closest('form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (headerSearchInput.value.trim()) {
+        window.location.href = `/shops?q[title_or_description_or_area_or_budget_or_scene_or_address_cont]=${encodeURIComponent(headerSearchInput.value.trim())}`;
+      }
+    });
+  }
 });
 </script>

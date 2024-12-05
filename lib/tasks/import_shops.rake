@@ -29,7 +29,11 @@ namespace :import do
             address: row['address'],
             opening_hours: row['opening_hours'],
             latitude: row['latitude'].to_f,
-            longitude: row['longitude'].to_f
+            longitude: row['longitude'].to_f,
+            area: row['area'],
+            budget: row['budget'],
+            scene: row['scene'],
+            shop_number: row['shop_number']
           )
           
           if shop.new_record?

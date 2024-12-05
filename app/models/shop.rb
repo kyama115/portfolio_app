@@ -64,9 +64,11 @@ class Shop < ApplicationRecord
   end
 
   # エリアに基づいてフィルタリングするメソッド
-  def self.by_area(area)
-    where(area: area)
-  end
+  scope :by_area, ->(area) {
+    return all unless area.present?
+    normalized_area = area.gsub(/(区|市)$/, '').strip
+    where("area LIKE ?", "%#{normalized_area}%")
+  }
 
   # 利用用途に基づいてフィルタリングするメソッド
   def self.by_scene(scene)
@@ -75,11 +77,13 @@ class Shop < ApplicationRecord
 
   # URLから画像を添付するメソッド
   def display_image
-    if shop_image.attached?
-      Rails.application.routes.url_helpers.url_for(shop_image)
-    elsif shop_image_url.present?
-      shop_image_url
+    if image_url.present?
+      # Google Maps APIのURLから実際の画像URLを取得
+      response = Net::HTTP.get_response(URI(image_url))
+      # リダイレクト先のURLを返す（実際の画像URL）
+      response['location']
     else
+      # デフォルト画像のパスを返す
       'shisha.jpg'
     end
   end
