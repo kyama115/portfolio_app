@@ -33,7 +33,8 @@ namespace :import do
             area: row['area'],
             budget: row['budget'],
             scene: row['scene'],
-            shop_number: row['shop_number']
+            shop_number: row['shop_number'],
+            shop_url: row['shop_url']
           )
           
           if shop.new_record?

@@ -23,7 +23,12 @@
     </div>
     <div>
       <h3 class="text-xl mb-2 text-black">< URL ></h3>
-      <p><%= link_to shop.shop_url, target: "_blank", class: "underline hover:text-blue-600" %></p>
+      <p class="w-full overflow-hidden">
+        <%= link_to shop.shop_url,
+            shop.shop_url,
+            target: "_blank",
+            class: "underline hover:text-blue-600 break-all block text-ellipsis overflow-hidden" %>
+      </p>
     </div>
   </div>
   <div>
