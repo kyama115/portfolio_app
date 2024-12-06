@@ -1,0 +1,35 @@
+<tr>
+  <td>
+    <div>
+      <%= link_to '詳細', admin_user_path(user), class: 'btn bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded shadow-md mr-2' %>
+    </div>
+    <div>
+      <%= link_to '編集', edit_admin_user_path(user), class: 'btn bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow-md mr-2' %>
+    </div>
+    <div>
+      <%= button_to '削除', admin_user_path(user), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded shadow-md' %>
+    </div>
+  </td>
+
+  <td>
+    <%= user.id %>
+  </td>
+  <td>
+    <%= user.name %>
+  </td>
+  <td>
+    <%= user.email %>
+  </td>
+  <td>
+    <%= user.nickname %>
+  </td>
+  <td>
+    <%= user.role %>
+  </td>
+  <td>
+    <%= l user.created_at, format: :long %>
+  </td>
+  <td>
+    <%= image_tag(user.avatar.variant(resize: '200x200')) if user.avatar.attached? %>
+  </td>
+</tr>

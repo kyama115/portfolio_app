@@ -1,0 +1,60 @@
+<% content_for(:title, '新規ユーザー作成') %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="mx-auto max-w-3xl">
+    <%= form_with(model: [:admin, @user], local: true, class: 'space-y-6', data: { turbo: false }) do |f| %>
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">新規ユーザー作成</h1>
+        </div>
+      </div>
+
+      <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl">
+        <div class="px-6 py-6 sm:p-8">
+          <div class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+            <!-- 名前 -->
+            <div class="sm:col-span-4">
+              <%= f.label :name, "名前", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.text_field :name, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "名前を入力" %>
+            </div>
+
+            <!-- メールアドレス -->
+            <div class="col-span-full">
+              <%= f.label :email, "メールアドレス", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.email_field :email, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "メールアドレスを入力" %>
+            </div>
+
+            <!-- パスワード -->
+            <div class="sm:col-span-3">
+              <%= f.label :password, "パスワード", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.password_field :password, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "パスワードを入力" %>
+            </div>
+
+            <!-- パスワード確認 -->
+            <div class="sm:col-span-3">
+              <%= f.label :password_confirmation, "パスワード確認", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.password_field :password_confirmation, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "パスワードを再入力" %>
+            </div>
+
+            <!-- 権限 -->
+            <div class="sm:col-span-3">
+              <%= f.label :role, "権限", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.select :role, User.roles.keys.map { |role| [role.titleize, role] }, {}, { class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+            </div>
+
+            <!-- アバター -->
+            <div class="sm:col-span-3">
+              <%= f.label :avatar, "アバター", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%= f.file_field :avatar, class: "block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end space-x-4 pt-6">
+        <%= f.submit "作成する", class: "rounded-md bg-gray-800 px-8 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors duration-200" %>
+      </div>
+    <% end %>
+    <%= link_to "戻る", :back, class: "tracking-widest pt-6 flex flex-col w-full text-center text-sm text-black hover:underline" %>
+  </div>
+</div>

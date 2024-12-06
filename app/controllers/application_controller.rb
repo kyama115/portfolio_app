@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  skip_before_action :verify_authenticity_token, if: :skip_csrf_token?
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
   before_action :authenticate_user!
@@ -25,11 +26,9 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :email, :password, :password_confirmation, :nickname, :avatar])
   end
 
-  # def set_locale
-  #   I18n.locale = params[:locale] || I18n.default_locale
-  # end
+  private
 
-  # def default_url_options
-  #   { locale: I18n.locale }
-  # end
+  def skip_csrf_token?
+    request.format.json? || request.path.match?(/^\/users\/auth\//)
+  end
 end

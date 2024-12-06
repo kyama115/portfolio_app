@@ -1,0 +1,20 @@
+<aside class="flex-shrink-0 w-64 bg-white shadow-lg overflow-y-auto">
+  <nav class="mt-2 px-2">
+    <ul class="space-y-1">
+      <li>
+        <%= link_to admin_users_path,
+            class: "group flex items-center px-3 py-2 text-sm font-medium rounded-md #{active_if(admin_users_path)} hover:bg-gray-50 hover:text-gray-900" do %>
+          <i class="bi bi-file-earmark mr-3 flex-shrink-0 text-gray-500"></i>
+          <span class="truncate">ユーザーリスト</span>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to admin_shops_path,
+            class: "group flex items-center px-3 py-2 text-sm font-medium rounded-md #{active_if(admin_shops_path)} hover:bg-gray-50 hover:text-gray-900" do %>
+          <i class="bi bi-person mr-3 flex-shrink-0 text-gray-500"></i>
+          <span class="truncate">店舗リスト</span>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+</aside>

@@ -29,6 +29,8 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
+/lib/data/
+
 /public/assets
 
 # Ignore master key for decrypting credentials and more.
@@ -38,3 +40,4 @@
 !/app/assets/builds/.keep
 
 /node_modules
+/vendor/bundle

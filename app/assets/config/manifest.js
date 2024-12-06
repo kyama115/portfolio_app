@@ -4,3 +4,7 @@
 //= link controllers/application.js
 //= link controllers/hello_controller.js
 //= link controllers/index.js
+//= link controllers/autocomplete_controller.js
+//= link controllers/maps.js
+//= link admin.js
+//= link application.js

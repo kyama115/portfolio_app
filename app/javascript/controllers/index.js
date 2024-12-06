@@ -2,7 +2,15 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application"
+import { Application } from "@hotwired/stimulus"
+import { Autocomplete } from 'stimulus-autocomplete'
+import { Controller } from "./autocomplete_controller"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+const application = Application.start()
+application.register('autocomplete', Autocomplete)
+
+// Configure Stimulus development experience
+application.debug = false
+window.Stimulus = application
+
+export { application }

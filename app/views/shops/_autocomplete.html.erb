@@ -1,5 +1,9 @@
 <% shops.each do |shop| %>
-  <li class="list-group-item list-group-item-action" role="option" data-autocomplete-value="<%= shop.title %>" data-autocomplete-label="<%= shop.title %>">
-    <%= shop.title %> - <%= shop.address %> <!-- 住所を追加 -->
-  </li>
+  <div class="p-3 hover:bg-gray-50 cursor-pointer"
+       data-action="click->autocomplete#select"
+       data-value="<%= shop.title %>">
+    <div class="text-sm">
+      <%= shop.title %>
+    </div>
+  </div>
 <% end %>

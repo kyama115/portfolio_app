@@ -275,7 +275,16 @@ Devise.setup do |config|
   config.omniauth :google_oauth2,
                   ENV['GOOGLE_CLIENT_ID'],
                   ENV['GOOGLE_CLIENT_SECRET'],
-                  skip_jwt: true
+                  {
+                    scope: 'email,profile',
+                    prompt: 'select_account',
+                    image_aspect_ratio: 'square',
+                    image_size: 50,
+                    access_type: 'online',
+                    skip_jwt: true,
+                    provider_ignores_state: true
+                  }
+  OmniAuth.config.logger = Rails.logger if Rails.env.development?
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

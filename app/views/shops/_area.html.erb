@@ -1,11 +1,34 @@
 <div class="mb-8">
   <h2 class="text-xl mb-4">エリアから探す</h2>
   <div class="flex flex-wrap gap-4">
-    <% [
-      '恵比寿', '渋谷', '新宿', '池袋', '銀座', '六本木',
-      '麻布十番', '表参道', '青山', '代官山'
-    ].uniq.each do |area| %>
-      <%= link_to area, shops_path(area: area), class: "px-4 py-2 rounded-full border hover:bg-gray-100" %>
+    <% {
+      '渋谷区' => '渋谷',
+      '新宿区' => '新宿',
+      '世田谷区' => '世田谷',
+      '目黒区' => '目黒',
+      '港区' => '港',
+      '中央区' => '中央',
+      '千代田区' => '千代田',
+      '台東区' => '台東',
+      '文京区' => '文京',
+      '豊島区' => '豊島',
+      '北区' => '北',
+      '荒川区' => '荒川',
+      '板橋区' => '板橋',
+      '練馬区' => '練馬',
+      '足立区' => '足立',
+      '葛飾区' => '葛飾',
+      '江戸川区' => '江戸川',
+      '大田区' => '大田',
+      '品川区' => '品川',
+      '目黒区' => '目黒',
+      '西東京市' => '西東京',
+      '横浜市' => '横浜',
+      '川崎市' => '川崎'
+    }.each do |display_name, search_param| %>
+      <%= link_to display_name, 
+          shops_path(q: { area_cont: search_param }), 
+          class: "px-4 py-2 rounded-full border hover:bg-gray-100" %>
     <% end %>
   </div>
 </div>

@@ -1,0 +1,65 @@
+<% content_for :title do %>
+  店舗一覧
+<% end %>
+
+<div class="container mb-5 pt-2">
+  <div class="col-md-3 text-right">
+    <%= link_to '新規店舗作成', new_admin_shop_path, class: "ml-auto px-6 py-2 bg-black text-white rounded-lg hover:underline" %>
+  </div>
+
+  <h1>店舗一覧</h1>
+
+  <p>全店舗数: <%= @total_shops_count %></p>
+
+  <div class="row">
+  <div class="col-md-12">
+    <%= render 'search_form', class: 'w-full p-4 my-2 rounded-lg' %>
+    <div class="mb-4">
+      <label for="sort_order" class="mr-2">並び替え:</label>
+      <select id="sort_order" class="form-control" onchange="location = this.value;">
+        <option value="<%= request.original_url %>">選択してください</option>
+        <option value="<%= url_for(request.params.merge(order: :asc)) %>">ID 昇順</option>
+        <option value="<%= url_for(request.params.merge(order: :desc)) %>">ID 降順</option>
+      </select>
+    </div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col"><%= Shop.human_attribute_name(:id) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:title) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:description) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:address) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:area) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:budget) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:scene) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:opening_hours) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:shop_number) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:shop_url) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:latitude) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:longitude) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:created_at) %></th>
+        <th scope="col"><%= Shop.human_attribute_name(:shop_image) %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render @shops %>
+      </tbody>
+    </table>
+  </div>
+</div>
+  <div class="row">
+    <div class="col-md-12">
+      <!-- ページネーション -->
+      <%= paginate @shops %>
+    </div>
+  </div>
+</div>
+
+<script>
+  function redirectToSortOrder(url) {
+    if (url) {
+      window.location = url;
+    }
+  }
+</script>

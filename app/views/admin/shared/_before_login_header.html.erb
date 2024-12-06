@@ -1,0 +1,15 @@
+<header class="bg-gray-800 fixed top-0 left-0 w-full z-30 shadow">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <%= image_tag asset_path("default_avatar.png"), class: "h-10" %>
+        <%= link_to '管理者画面', root_path, class: "text-white text-xl mx-4 hover:text-gray-300" %>
+      </div>
+      <nav class="flex items-center">
+        <ul class="flex space-x-4">
+          <li><%= button_to 'ログイン', admin_login_path, method: :get, class: "text-white hover:text-gray-300 bg-transparent border-none cursor-pointer p-0 transition duration-150 ease-in-out" %></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

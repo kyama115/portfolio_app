@@ -1,11 +1,12 @@
 source "https://rubygems.org"
 
+ruby "3.1.4"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.2.0"
+gem "rails", "~> 7.2.1"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 # Use postgresql as the database for Active Record
-gem "pg", "~> 1.1"
+gem "pg"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
@@ -16,6 +17,8 @@ gem "turbo-rails"
 gem "stimulus-rails"
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "cssbundling-rails"
+
+# gem "jsbundling-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
@@ -34,7 +37,9 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+# gem 'image_processing', '~> 1.13'
+# gem 'mini_magick', '~> 4.13'
+gem 'ruby-vips'
 
 gem "ransack", "4.2.1"
 gem "activestorage"
@@ -44,6 +49,7 @@ gem 'gretel', '~> 5.0'
 gem 'rails-i18n', '7.0.9'
 gem 'devise-i18n', '1.12.1'
 gem 'geocoder'
+gem 'gmaps4rails'
 gem 'dotenv-rails'
 gem 'devise'
 gem 'omniauth'
@@ -52,6 +58,11 @@ gem 'omniauth-rails_csrf_protection'
 gem "auth0", "~> 5.9"
 gem 'kaminari', '~> 1.2.2'
 gem 'config'
+# Use Sass to process CSS
+gem "dartsass-rails"
+# Gemfile
+gem 'roo'  # Excelファイルを読み込むため
+gem 'rubyXL'  # Excel形式の処理用
 
 
 group :development, :test do

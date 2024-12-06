@@ -10,7 +10,7 @@
         <% @shops.each do |shop| %>
           <div class="w-1/3 p-4">
             <div class="flex relative h-full">
-              <%= image_tag(shop_image(shop), class: "absolute inset-0 w-full h-full object-cover object-center rounded-lg") %>
+              <%= image_tag(shop_display_image(shop), class: "absolute inset-0 w-full h-full object-cover object-center rounded-lg") %>
               <div class="absolute top-3 right-3 z-20">
                 <%= render 'favorites/favorite_buttons', { shop: shop } %>
               </div>

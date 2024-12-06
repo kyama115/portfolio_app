@@ -1,50 +1,50 @@
 <div class="bg-gray-100 shadow-lg rounded-xl p-8 text-black">
   <div class="grid grid-cols-2 gap-8">
     <div>
-      <h3 class="text-xl mb-2 text-black">住所</h3>
-      <p><%= shop.address %></p>
+      <h3 class="text-xl mb-2 text-black">< 住所 ></h3>
+      <p><%= link_to shop.address, "https://google.com/maps/search/#{shop.address}", target: "_blank", class: "underline hover:text-blue-600" %></p>
     </div>
     <div>
-      <h3 class="text-xl mb-2 text-black">営業時間</h3>
+      <h3 class="text-xl mb-2 text-black">< 営業時間 ></h3>
       <p><%= shop.opening_hours %></p>
     </div>
     <div>
-      <h3 class="text-xl mb-2 text-black">予算</h3>
+      <h3 class="text-xl mb-2 text-black">< 予算 ></h3>
       <p><%= shop.budget %>円</p>
       <p class="text-sm text-black mt-1">詳細記載予定</p>
     </div>
     <div>
-      <h3 class="text-xl mb-2 text-black">電話番号</h3>
-      <p><%= shop.shop_number %></p>
+      <h3 class="text-xl mb-2 text-black">< 電話番号 ></h3>
+      <p><%= link_to shop.shop_number, "tel:#{shop.shop_number}", target: "_blank", class: "underline hover:text-blue-600" %></p>
     </div>
     <div>
-      <h3 class="text-xl mb-2 text-black">利用用途</h3>
+      <h3 class="text-xl mb-2 text-black">< 利用用途 ></h3>
       <p><%= shop.scene %></p>
     </div>
     <div>
-      <h3 class="text-xl mb-2 text-black">URL</h3>
-      <p><%= shop.shop_url %></p>
-    </div>
-    <div class="col-span-full">
-      <h3 class="text-xl mb-2 text-black">アクセス</h3>
-      <div id="map" style="width: 100%; height: 400px;"></div>
+      <h3 class="text-xl mb-2 text-black">< URL ></h3>
+      <p class="w-full overflow-hidden">
+        <%= link_to shop.shop_url,
+            shop.shop_url,
+            target: "_blank",
+            class: "underline hover:text-blue-600 break-all block text-ellipsis overflow-hidden" %>
+      </p>
     </div>
   </div>
+  <div>
+    <h3 class="text-xl mt-5 mb-2 text-black">< アクセス ></h3>
+    <% if shop.latitude.present? && shop.longitude.present? %>
+      <iframe
+        width="100%"
+        height="400"
+        style="border:0; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"
+        loading="lazy"
+        allowfullscreen
+        src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>
+        &q=<%= shop.latitude %>,<%= shop.longitude %>">
+      </iframe>
+    <% else %>
+      <p class="mt-5">地図を表示するための情報がありません。</p>
+    <% end %>
+  </div>
 </div>
-
-<script>
-function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 15,
-    center: { lat: <%= shop.latitude %>, lng: <%= shop.longitude %> },
-  });
-  
-  new google.maps.Marker({
-    position: { lat: <%= shop.latitude %>, lng: <%= shop.longitude %> },
-    map,
-    title: "<%= shop.title %>",
-  });
-}
-
-window.addEventListener("load", initMap);
-</script>

@@ -1,0 +1,16 @@
+<header class="flex-shrink-0 h-16 bg-black shadow-lg">
+  <div class="h-full flex items-center justify-between px-4">
+    <div class="flex items-center">
+      <%= image_tag asset_path("default_avatar.png"), class: "h-8 w-8 rounded-full" %>
+      <%= link_to '管理者画面', admin_root_path, class: "ml-4 text-xl font-semibold text-white hover:text-gray-300 transition-colors duration-200" %>
+    </div>
+    <nav>
+      <div class="flex items-center space-x-4">
+        <%= button_to 'ログアウト', 
+            admin_logout_path, 
+            method: :delete, 
+            class: "text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200" %>
+      </div>
+    </nav>
+  </div>
+</header>

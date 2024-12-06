@@ -1,6 +1,10 @@
 module ApplicationHelper
   include Devise::Controllers::Helpers
 
+  def active_if(path)
+    current_page?(path) ? 'bg-gray-100 text-gray-900' : 'text-gray-600'
+  end
+
   def user_avatar(user, size = 100)
     if user&.avatar&.attached?
       user.avatar.variant(resize: "#{size}x#{size}!")
@@ -11,10 +15,12 @@ module ApplicationHelper
   end
 
   def shop_image(shop, size = 100)
-    if shop&.shop_image&.attached?
-      shop.shop_image.variant(resize: "#{size}x#{size}!")
-    else
-      "shisha.jpg"
+    def shop_display_image(shop)
+      if shop.image_url.present?
+        shop.display_image
+      else
+        "shisha.jpg"
+      end
     end
   end
 
