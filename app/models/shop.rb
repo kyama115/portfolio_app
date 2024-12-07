@@ -21,6 +21,25 @@ class Shop < ApplicationRecord
     where.not(latitude: nil, longitude: nil)
   }
 
+  # 東京都のその他のエリアを取得
+  scope :in_other_tokyo, -> do
+    where("area LIKE ANY (ARRAY[?])", 
+      ['八王子%', '立川%', '武蔵野%', '三鷹%', '青梅%', '府中%', 
+       '昭島%', '調布%', '町田%', '小金井%', '小平%', '日野%',
+       '東村山%', '国分寺%', '国立%', '福生%', '狛江%', '東大和%',
+       '清瀬%', '東久留米%', '武蔵村山%', '多摩%', '稲城%', '羽村%',
+       'あきる野%', '西東京%'])
+  end
+
+  # 神奈川県のその他のエリアを取得
+  scope :in_other_kanagawa, -> do
+    where("area LIKE ANY (ARRAY[?])", 
+      ['相模原%', '横須賀%', '平塚%', '鎌倉%',
+       '藤沢%', '小田原%', '茅ヶ崎%', '逗子%', '三浦%', '秦野%',
+       '厚木%', '大和%', '伊勢原%', '海老名%', '座間%', '南足柄%',
+       '綾瀬%'])
+  end
+
   def favorite_by?(user)
     favorites.exists?(user_id: user.id)
   end
