@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  after_create :assign_admin_role
+
   has_many :reviews, dependent: :destroy
   has_many :shops, through: :reviews
   has_many :favorites, dependent: :destroy
@@ -93,5 +95,9 @@ class User < ApplicationRecord
     unless acceptable_types.include?(avatar.content_type)
       errors.add(:avatar, "はJPEGまたはPNG形式でアップロードしてください")
     end
+  end
+
+  def assign_admin_role
+    self.update(role: "admin") if self.email == ENV["ADMIN_EMAIL"]
   end
 end
