@@ -63,6 +63,7 @@ gem "dartsass-rails"
 # Gemfile
 gem 'roo'  # Excelファイルを読み込むため
 gem 'rubyXL'  # Excel形式の処理用
+gem 'draper'
 
 
 group :development, :test do

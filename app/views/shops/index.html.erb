@@ -16,7 +16,7 @@
               </div>
               <%= link_to shop_path(shop), class: "px-8 py-10 relative w-full border-4 border-gray-200 bg-white opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg" do %>
                 <div class="tracking-widest text-sm title-font font-medium text-blue-600 mb-1" style="min-height: 60px;">
-                  <%= shop.area.presence || "" %>
+                  <%= shop.area_display %>
                 </div>
                 <h1 class="title-font text-lg font-medium text-gray-900 mb-3"><%= shop.title %></h1>
                 <p class="leading-relaxed text-gray-800"><%= shop.description %></p>
