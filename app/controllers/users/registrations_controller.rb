@@ -14,12 +14,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # # POST /resource
   def create
-    @user = User.new(sign_up_params)
-    if @user.save
-      redirect_to new_user_session_path, notice: 'ユーザー登録が完了しました'
+    build_resource(sign_up_params)
+
+    if resource.save
+      if resource.active_for_authentication?
+        # set_flash_message! :notice, :signed_up
+        flash[:notice] = 'ユーザー登録が完了しました'
+        # sign_up(resource_name, resource)
+        respond_with resource, location: new_user_session_path
+      else
+        set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+        expire_data_after_sign_in!
+        respond_with resource, location: after_inactive_sign_up_path_for(resource)
+      end
     else
-      flash[:alert] = @user.errors.full_messages.join(', ')
-      respond_with_navigational(@user) { render :new }
+      clean_up_passwords resource
+      set_minimum_password_length
+      flash[:alert] = resource.errors.full_messages.join(', ')
+      render :new
     end
   end
 

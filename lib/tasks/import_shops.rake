@@ -24,7 +24,9 @@ namespace :import do
 
           # budgetの値を適切に処理
           budget_value = if row['budget'].present?
-            row['budget'].to_s.gsub(/[^\d]/, '').to_i  # 数字以外を削除して整数に変換
+            row['budget'].to_s.gsub(/[^\d]/, '').to_i
+          else
+            nil
           end
 
           # 既存の店舗を検索し、存在すれば更新、なければ作成
@@ -36,7 +38,7 @@ namespace :import do
             latitude: row['latitude'].to_f,
             longitude: row['longitude'].to_f,
             area: row['area'],
-            budget: row['budget'].to_i,
+            budget: budget_value,
             scene: row['scene'],
             shop_number: row['shop_number'],
             shop_url: row['shop_url']

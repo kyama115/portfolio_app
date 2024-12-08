@@ -26,16 +26,34 @@ class User < ApplicationRecord
   validates :reset_password_token, uniqueness: true, allow_nil: true
   validates :role, presence: true
 
-  enum role: { user: '0', admin: '1' }
+  enum :role, { user: "0", admin: "1" }
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0, 20]
-      user.name = auth.info.name
-      user.provider = auth.provider
-      user.uid = auth.uid
+    user = User.where(provider: auth.provider, uid: auth.uid).first
+
+    unless user
+      user = User.create(
+        name: auth.info.name,
+        email: auth.info.email,
+        provider: auth.provider,
+        uid: auth.uid,
+        password: Devise.friendly_token[0, 20],
+        password_confirmation: Devise.friendly_token[0, 20]
+      )
+
+      if auth.info.image.present?
+        downloaded_image = URI.open(auth.info.image)
+        user.avatar.attach(
+          io: downloaded_image,
+          filename: "google_avatar.jpg"
+        )
+      end
     end
+
+    user
+  rescue StandardError => e
+    Rails.logger.error "Google OAuth error: #{e.message}"
+    nil
   end
 
   has_one_attached :avatar do |attachable|

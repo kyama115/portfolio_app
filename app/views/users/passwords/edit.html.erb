@@ -4,8 +4,12 @@
 
 <div class="flex flex-col min-h-screen justify-center items-center bg-cover bg-center" style="background-image: url('<%= asset_path('shisha.jpg') %>')">
   <div class="w-full max-w-md p-8 m-4 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg text-white border-2 border-white border-opacity-10">
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-      <h2 class="text-4xl text-center mb-8">パスワード再設定</h2>
+    <h2 class="text-4xl text-center mb-8">パスワード再設定</h2>
+    
+    <%= form_for(resource, as: resource_name,
+                           url: password_path(resource_name), 
+                           html: { method: :put }, 
+                           data: { turbo: false }) do |f| %>
       <%= render "users/shared/error_messages", resource: resource %>
       <%= f.hidden_field :reset_password_token %>
 
