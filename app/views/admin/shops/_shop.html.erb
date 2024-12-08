@@ -45,8 +45,13 @@
   <td>
     <%= shop.shop_number %>
   </td>
-  <td>
-    <%= shop.shop_url %>
+  <td class="w-32 max-w-32">
+    <div class="truncate" style="width: 200px !important; max-width: 200px !important;"> 
+      <%= link_to shop.shop_url, shop.shop_url,
+          target: '_blank',
+          class: "text-blue-600 hover:text-blue-800 truncate block",
+          title: shop.shop_url %>
+    </div>
   </td>
   <td>
     <%= shop.latitude %>
