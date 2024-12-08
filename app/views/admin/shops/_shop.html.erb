@@ -1,8 +1,21 @@
 <tr>
   <td>
-    <%= link_to '詳細', admin_shop_path(shop), class: 'btn bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded shadow-md mr-2' %>
-    <%= link_to '編集', edit_admin_shop_path(shop), class: 'btn bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow-md mr-2' %>
-    <%= button_to '削除', admin_shop_path(shop), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded shadow-md' %>
+    <div class="inline-flex space-x-2">
+      <div>
+        <%= link_to '詳細', admin_shop_path(shop),
+            class: 'btn bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded shadow-md' %>
+      </div>
+      <div>
+        <%= link_to '編集', edit_admin_shop_path(shop),
+            class: 'btn bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow-md' %>
+      </div>
+      <div>
+        <%= button_to '削除', admin_shop_path(shop),
+            method: :delete,
+            data: { confirm: '本当に削除しますか？' },
+            class: 'btn bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded shadow-md' %>
+      </div>
+    </div>
   </td>
 
   <td>
