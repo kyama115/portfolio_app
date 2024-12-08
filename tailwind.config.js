@@ -24,6 +24,11 @@ module.exports = {
         'flash-success-text': '#155724', // 成功メッセージの文字色
         'flash-error-text': '#721c24', // エラーメッセージの文字色
       },
+      // fontFamily: {
+      //   quicksand: ['Quicksand', 'sans-serif'],
+      //   comfortaa: ['Comfortaa', 'sans-serif'],
+      //   pacifico: ['Pacifico', 'cursive'],
+      // },
     }
   },
 

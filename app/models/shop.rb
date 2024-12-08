@@ -40,6 +40,26 @@ class Shop < ApplicationRecord
        '綾瀬%'])
   end
 
+  def area_display
+    area.presence || ""
+  end
+
+  def area_display
+    return "" if area.blank?
+
+    # エリアが既に市または区で終わっている場合はそのまま返す
+    return area if area.match?(/(市|区)$/)
+
+    # 23区のエリアの場合は区を付ける
+    return "#{area}区" if self.class.tokyo_wards.include?(area)
+
+    # その他の市の場合は市を付ける
+    return "#{area}市" if self.class.tokyo_cities.include?(area) || self.class.kanagawa_cities.include?(area)
+
+    # どちらにも該当しない場合はそのまま返す
+    area
+  end
+
   def favorite_by?(user)
     favorites.exists?(user_id: user.id)
   end
@@ -105,5 +125,35 @@ class Shop < ApplicationRecord
       # デフォルト画像のパスを返す
       'shisha.jpg'
     end
+  end
+
+  private
+
+  def self.tokyo_cities
+    %w(
+      八王子 立川 武蔵野 三鷹 青梅 府中
+      昭島 調布 町田 小金井 小平 日野
+      東村山 国分寺 国立 福生 狛江 東大和
+      清瀬 東久留米 武蔵村山 多摩 稲城 羽村
+      あきる野 西東京
+    )
+  end
+
+  def self.tokyo_wards
+    %w(
+      千代田 中央 港 新宿 文京 台東
+      墨田 江東 品川 目黒 大田 世田谷
+      渋谷 中野 杉並 豊島 北 荒川
+      板橋 練馬 足立 葛飾 江戸川
+    )
+  end
+
+  def self.kanagawa_cities
+    %w(
+      横浜 川崎 相模原 横須賀 平塚 鎌倉
+      藤沢 小田原 茅ヶ崎 逗子 三浦 秦野
+      厚木 大和 伊勢原 海老名 座間 南足柄
+      綾瀬
+    )
   end
 end
